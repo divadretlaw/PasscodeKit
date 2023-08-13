@@ -27,7 +27,8 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/divadretlaw/WindowSceneReader.git", from: "2.0.0"),
-        .package(url: "https://github.com/evgenyneu/keychain-swift.git", from: "20.0.0")
+        .package(url: "https://github.com/evgenyneu/keychain-swift.git", from: "20.0.0"),
+        .package(url: "https://github.com/siteline/swiftui-introspect", from: "0.10.0")
     ],
     targets: [
         .target(
@@ -48,7 +49,10 @@ let package = Package(
         ),
         .target(
             name: "PasscodeUI",
-            dependencies: ["PasscodeModel"],
+            dependencies: [
+                "PasscodeModel",
+                .product(name: "SwiftUIIntrospect", package: "swiftui-introspect"),
+            ],
             resources: [.process("Resources")]
         )
     ]

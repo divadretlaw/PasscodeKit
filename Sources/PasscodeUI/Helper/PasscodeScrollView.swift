@@ -6,7 +6,9 @@
 //
 
 import SwiftUI
+import SwiftUIIntrospect
 
+/// Wrapper for `ScrollView`
 struct PasscodeScrollView<Content>: View where Content: View {
     var content: Content
     
@@ -17,14 +19,18 @@ struct PasscodeScrollView<Content>: View where Content: View {
     var body: some View {
         GeometryReader { proxy in
             if #unavailable(iOS 16.4) {
-                ScrollView {
+                ScrollView(.vertical) {
                     VStack {
                         content
                     }
                     .frame(maxWidth: .infinity, minHeight: proxy.size.height)
                 }
+                .introspect(.scrollView, on: .iOS(.v15, .v16), scope: .ancestor) { scrollView in
+                    scrollView.alwaysBounceVertical = false
+                    scrollView.alwaysBounceHorizontal = false
+                }
             } else {
-                ScrollView {
+                ScrollView(.vertical) {
                     VStack {
                         content
                     }
