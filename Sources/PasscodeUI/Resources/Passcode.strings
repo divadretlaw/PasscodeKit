@@ -1,0 +1,9 @@
+"passcode.title" = "Passcode";
+"passcode.create.title" = "Create Passcode";
+
+"passcode.enter.hint" = "Enter a new passcode";
+"passcode.enter.again.hint" = "Please re-enter your passcode";
+"passcode.enter.failed.hint" = "Passcodes did not match. Try again";
+
+"ok" = "OK";
+"cancel" = "Cancel";
