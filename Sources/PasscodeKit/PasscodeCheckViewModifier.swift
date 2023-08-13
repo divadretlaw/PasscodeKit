@@ -11,11 +11,11 @@ import PasscodeModel
 import PasscodeUI
 
 struct PasscodeCheckViewModifier: ViewModifier {
-    @Binding var isPresented: Bool
-    var onCompletion: (Bool) -> Void
-    
     @Environment(\.passcodeKeychain) private var keychain
     @Environment(\.passcodeKey) private var passcodeKey
+    
+    @Binding var isPresented: Bool
+    var onCompletion: (Bool) -> Void
     
     func body(content: Content) -> some View {
         if let passcode = passcode {

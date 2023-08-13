@@ -30,7 +30,9 @@ struct KeypadView: View {
                 NumberButton(value: .text("9"), text: $text)
             }
             HStack(spacing: hSpacing) {
-                NumberButton(value: .blank, text: $text).hidden()
+                NumberButton(value: .blank, text: $text)
+                    .hidden()
+                    .disabled(true)
                 NumberButton(value: .text("0"), text: $text)
                 NumberButton(value: .delete, text: $text)
             }
@@ -55,12 +57,13 @@ private struct NumberButton: View {
         } label: {
             ZStack {
                 value.display
-                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             .background(.thinMaterial)
             .clipShape(Circle())
             .frame(maxWidth: 100, maxHeight: 100)
         }
+        .buttonStyle(.plain)
     }
 }
 

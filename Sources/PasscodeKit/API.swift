@@ -12,14 +12,30 @@ import PasscodeUI
 import KeychainSwift
 
 public extension View {
-    func passcode() -> some View {
-        modifier(PasscodeViewModifier())
+    /// Add passcode protection to your app.
+    ///
+    /// - Parameters:
+    ///   - mode: The ``PasscodeMode`` to use when the passcode is setup.
+    ///   - fallbackMode: The fallback ``PasscodeMode`` to use when the passcode is not yet setup by the user.
+    /// - Returns: The view with passcode protection enabled
+    func passcode(mode: PasscodeMode = .default, fallbackMode: PasscodeMode = .autohide) -> some View {
+        modifier(PasscodeViewModifier(mode: mode, fallbackMode: fallbackMode))
     }
     
+    /// Manually check the passcode
+    ///
+    /// - Parameters:
+    ///   - isPresented: A binding to a Boolean value that determines whether to present the passcode view.
+    ///   - onCompletion: The closure to execute when the passcode was checked.
     func checkPasscode(isPresented: Binding<Bool>, onCompletion: @escaping (Bool) -> Void) -> some View {
         modifier(PasscodeCheckViewModifier(isPresented: isPresented, onCompletion: onCompletion))
     }
     
+    /// Setup a passcode
+    ///
+    /// - Parameters:
+    ///   - isPresented: A binding to a Boolean value that determines whether to present the passcode view.
+    ///   - type: The ``PasscodeType`` to setup.
     func setupPasscode(isPresented: Binding<Bool>, type: PasscodeType = .numeric(4)) -> some View {
         modifier(PasscodeSetupViewModifier(isPresented: isPresented, type: type))
     }

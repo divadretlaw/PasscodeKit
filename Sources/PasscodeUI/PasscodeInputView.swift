@@ -195,6 +195,7 @@ struct PasscodeInputView_Previews: PreviewProvider {
                 
             }
         }
+        .previewDisplayName("Numeric (Default)")
         
         NavigationView {
             PasscodeInputView(type: .customNumeric) { _ in
@@ -203,6 +204,7 @@ struct PasscodeInputView_Previews: PreviewProvider {
                 
             }
         }
+        .previewDisplayName("Numeric (Custom)")
         
         NavigationView {
             PasscodeInputView(type: .alphanumeric) { _ in
@@ -211,5 +213,6 @@ struct PasscodeInputView_Previews: PreviewProvider {
                 
             }
         }
+        .previewDisplayName("Alphanumeric")
     }
 }

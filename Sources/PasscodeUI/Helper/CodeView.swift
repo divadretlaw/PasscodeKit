@@ -34,15 +34,7 @@ struct CodeView: View {
                 fieldView
             }
         }
-        .dynamicTypeSize(calculatedDynamicTypeSize)
-    }
-    
-    private var calculatedDynamicTypeSize: DynamicTypeSize {
-        if dynamicTypeSize.isAccessibilitySize {
-            return .xxxLarge
-        } else {
-            return dynamicTypeSize
-        }
+        .dynamicTypeSize(computedDynamicTypeSize)
     }
     
     func bulletView(for count: Int) -> some View {
@@ -79,6 +71,20 @@ struct CodeView: View {
         }
         .padding(.horizontal, 40)
     }
+    
+    // The accessibility sizes easily clip the code view out of
+    // the view and provide no real benefit by having a larger
+    // size, as there is no real content to read.
+    //
+    // Therefore we limit the `dynamicTypeSize` to `.xxxLarge`
+    private var computedDynamicTypeSize: DynamicTypeSize {
+        if dynamicTypeSize.isAccessibilitySize {
+            return .xxxLarge
+        } else {
+            return dynamicTypeSize
+        }
+    }
+    
 }
 
 struct CodeView_Previews: PreviewProvider {

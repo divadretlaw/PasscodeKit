@@ -8,7 +8,7 @@ PasscodeKit is split into several modules and depending on what you need you can
 
 ### PasscodeKit
 
-The most complete, but also opinionated, module. Simply add `.passcode()` to your root view.
+The most complete, but also less customizable, module. Simply add `.passcode()` to your root view.
 
 ```swift
 @main
@@ -57,6 +57,10 @@ The core module, that handles displaying the passcode window. By default it has 
 
 The UI used in `PasscodeKit` without dependencies on `PasscodeCore` and `PasscodeKit`
 
+#### Localization
+
+Customize / Localize the `PasscodeUI` by providing a `Passcode.strings` file in your main app bundle. See the default [Passcode.strings](Sources/PasscodeUI/Resources/Passcode.strings) file for English Strings.
+
 ## Installation
 
 ### Xcode
@@ -74,13 +78,19 @@ Select the module(s) you need
 ### Swift Package Manager
 
 ```swift
-.package(url: "https://github.com/divadretlaw/PasscodeKit.git", from: "0.1.0"),
-```
-
-Add the module(s) to your target
-
-```swift
-.product(name: "PasscodeKit", package: "PasscodeKit")
+let package = Package(
+    dependencies: [
+        .package(url: "https://github.com/divadretlaw/PasscodeKit.git", from: "0.1.0"),
+    ],
+    targets: [
+        .target(
+            name: <#Target Name#>,
+            dependencies: [
+                .product(name: "PasscodeKit", package: "PasscodeKit")
+            ]
+        )
+    ]
+)
 ```
 
 ## License

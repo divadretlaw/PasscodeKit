@@ -11,12 +11,12 @@ import PasscodeModel
 import PasscodeUI
 
 struct PasscodeSetupViewModifier: ViewModifier {
+    @Environment(\.passcodeKeychain) private var keychain
+    @Environment(\.passcodeKey) private var passcodeKey
+    @Environment(\.passcodeKeychainAccessOption) private var keychainAccessOption
+    
     @Binding var isPresented: Bool
     var type: PasscodeType
-    
-    @Environment(\.passcodeKeychain) private var keychain
-    @Environment(\.passcodeKeychainAccessOption) private var keychainAccessOption
-    @Environment(\.passcodeKey) private var passcodeKey
     
     func body(content: Content) -> some View {
         content
