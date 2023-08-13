@@ -115,10 +115,11 @@ struct InternalPasscodeInputView<Hint>: View where Hint: View {
                 hint()
                 
                 CodeView(text: input, type: type)
+                    .padding(.horizontal, 40)
                     .modifier(Shake(animatableData: attempts))
                     .background {
                         if type.isAlphaNumeric {
-                            TextField("", text: $input)
+                            SecureField("", text: $input)
                                 .focused($alphaNumericInput)
                                 .onAppear {
                                     alphaNumericInput = true
@@ -129,18 +130,19 @@ struct InternalPasscodeInputView<Hint>: View where Hint: View {
                         }
                     }
             }
+            
             if type.isNumeric {
                 Spacer()
                 
                 KeypadView(text: $input.max(type.maxInputLength))
                     .foregroundStyle(.primary)
-                    .padding(.horizontal, 40)
                     .disabled(isDisabled)
+                    .padding(.horizontal, 40)
             }
             
             Spacer()
         }
-        .safeAreaInset(edge: .bottom, spacing: 0) {
+        .safeAreaInset(edge: .bottom) {
             if !type.canAutoComplete {
                 Button {
                     finishInput(with: input)
@@ -152,6 +154,7 @@ struct InternalPasscodeInputView<Hint>: View where Hint: View {
                 .buttonStyle(.borderedProminent)
                 .disabled(isDisabled)
                 .padding(.horizontal, 40)
+                .padding(.vertical)
             }
         }
         .onChange(of: input) { text in

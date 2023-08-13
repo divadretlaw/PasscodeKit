@@ -13,6 +13,9 @@ struct CodeView: View {
     
     var passcode: Passcode
     
+    @State private var parentSize: CGSize = .zero
+    @State private var inputSize: CGSize = .zero
+    
     init(passcode: Passcode) {
         self.passcode = passcode
     }
@@ -22,16 +25,23 @@ struct CodeView: View {
     }
     
     var body: some View {
-        Group {
-            switch passcode.type {
-            case let .numeric(count):
-                if count <= 6 {
-                    bulletView(for: count)
-                } else {
+        ZStack {
+            // Size helper
+            Color.clear
+                .frame(maxWidth: .infinity, maxHeight: 0)
+                .readSize(into: $parentSize)
+            
+            VStack {
+                switch passcode.type {
+                case let .numeric(count):
+                    if count <= 6 {
+                        bulletView(for: count)
+                    } else {
+                        fieldView
+                    }
+                default:
                     fieldView
                 }
-            default:
-                fieldView
             }
         }
         .dynamicTypeSize(computedDynamicTypeSize)
@@ -63,13 +73,16 @@ struct CodeView: View {
                 }
             }
         }
-        .frame(maxWidth: .infinity)
-        .padding(16)
+        .readSize(into: $inputSize)
+        .padding(.horizontal, 8)
+        .frame(width: parentSize.width, alignment: alignment)
+        .padding(.vertical, 16)
+        .clipped(antialiased: true)
         .overlay {
             RoundedRectangle(cornerRadius: 10)
                 .stroke(lineWidth: 2)
+                .frame(width: parentSize.width - 4)
         }
-        .padding(.horizontal, 40)
     }
     
     // The accessibility sizes easily clip the code view out of
@@ -85,6 +98,17 @@ struct CodeView: View {
         }
     }
     
+    private var isContentBiggerThanParent: Bool {
+        inputSize.width > parentSize.width
+    }
+    
+    private var alignment: Alignment {
+        if isContentBiggerThanParent {
+            return .trailing
+        } else {
+            return .center
+        }
+    }
 }
 
 struct CodeView_Previews: PreviewProvider {
@@ -101,7 +125,7 @@ struct CodeView_Previews: PreviewProvider {
                     Text("Fixed Numeric")
                 }
                 Section {
-                    CodeView(text: "123456722", type: .numeric(123))
+                    CodeView(text: "123", type: .numeric(123))
                     CodeView(text: "123456789", type: .customNumeric)
                 } header: {
                     Text("Custom Numeric")
@@ -109,10 +133,12 @@ struct CodeView_Previews: PreviewProvider {
                 Section {
                     CodeView(text: "", type: .alphanumeric)
                     CodeView(text: "asdf", type: .alphanumeric)
+                    CodeView(text: "abcdefghijklmnopqrstuvwxyz", type: .alphanumeric)
                 } header: {
                     Text("Alphanumeric")
                 }
             }
+            .padding(.horizontal, 40)
         }
     }
 }
