@@ -11,7 +11,9 @@ PasscodeKit is split into several modules and depending on what you need you can
 
 ### PasscodeKit
 
-The most complete, but also less customizable, module. Simply add `.passcode()` to your root view.
+<img width="200" alt="Screenshot" src="https://github.com/divadretlaw/PasscodeKit/assets/6899256/f9328b38-7b17-42b0-ab4b-3e07dad4f1d6">
+
+The most complete, but also less customizable, module. Simply add `.passcode(title:hint:)`, with an optional title and hint view, to your root view.
 
 ```swift
 @main
@@ -19,7 +21,9 @@ struct MyApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .passcode()
+                .passcode("Enter Passcode") {
+                    // Optional view as a hint above the code view
+                }
         }
     }
 }
@@ -76,14 +80,14 @@ https://github.com/divadretlaw/PasscodeKit
 
 Select the module(s) you need
 
-![Xcode](Resources/Xcode.png)
+![Xcode](https://github.com/divadretlaw/PasscodeKit/assets/6899256/457e60c8-9146-4c57-bf2a-83f970b0e203)
 
 ### Swift Package Manager
 
 ```swift
 let package = Package(
     dependencies: [
-        .package(url: "https://github.com/divadretlaw/PasscodeKit.git", from: "0.2.0"),
+        .package(url: "https://github.com/divadretlaw/PasscodeKit.git", from: "0.3.0"),
     ],
     targets: [
         .target(
