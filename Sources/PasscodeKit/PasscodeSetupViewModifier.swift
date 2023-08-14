@@ -17,6 +17,7 @@ struct PasscodeSetupViewModifier: ViewModifier {
     
     @Binding var isPresented: Bool
     var type: PasscodeType
+    var onCompletion: ((Bool) -> Void)?
     
     func body(content: Content) -> some View {
         content
@@ -28,9 +29,11 @@ struct PasscodeSetupViewModifier: ViewModifier {
                         do {
                             let data = try JSONEncoder().encode(code)
                             keychain.set(data, forKey: passcodeKey, withAccess: keychainAccessOption)
+                            onCompletion?(true)
                         } catch {
                             print(error.localizedDescription)
                             keychain.delete(passcodeKey)
+                            onCompletion?(false)
                         }
                     }
                 }

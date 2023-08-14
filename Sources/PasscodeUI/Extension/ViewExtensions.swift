@@ -8,6 +8,34 @@
 import SwiftUI
 
 public extension View {
+    func transparentBackground(_ isTransparent: Bool = true) -> some View {
+        background(TransparentBackground(isTransparent: isTransparent))
+    }
+}
+
+private struct TransparentBackground: UIViewRepresentable {
+    var isTransparent: Bool
+    
+    func makeUIView(context: Context) -> UIView {
+        let view = UIView(frame: .zero)
+        view.isUserInteractionEnabled = false
+        view.alpha = 0
+        
+        DispatchQueue.main.async {
+            guard let viewController = view.findViewController() else { return }
+            viewController.view.backgroundColor = isTransparent ? .clear : nil
+        }
+        
+        return view
+    }
+    
+    func updateUIView(_ uiView: UIView, context: Context) {
+        guard let viewController = uiView.findViewController() else { return }
+        viewController.view.backgroundColor = isTransparent ? .clear : nil
+    }
+}
+
+extension View {
     func readSize(onChange: @escaping (CGSize) -> Void) -> some View {
         background {
             GeometryReader { geometryProxy in

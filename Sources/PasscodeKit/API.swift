@@ -26,9 +26,10 @@ public extension View {
     ///
     /// - Parameters:
     ///   - isPresented: A binding to a Boolean value that determines whether to present the passcode view.
+    ///   - isTransparent: Wheter to present the passcode view as a transparent blurred overlay.
     ///   - onCompletion: The closure to execute when the passcode was checked.
-    func checkPasscode(isPresented: Binding<Bool>, onCompletion: @escaping (Bool) -> Void) -> some View {
-        modifier(PasscodeCheckViewModifier(isPresented: isPresented, onCompletion: onCompletion))
+    func checkPasscode(isPresented: Binding<Bool>, isTransparent: Bool = true, onCompletion: @escaping (Bool) -> Void) -> some View {
+        modifier(PasscodeCheckViewModifier(isPresented: isPresented, isTransparent: isTransparent, onCompletion: onCompletion))
     }
     
     /// Setup a passcode
@@ -36,7 +37,11 @@ public extension View {
     /// - Parameters:
     ///   - isPresented: A binding to a Boolean value that determines whether to present the passcode view.
     ///   - type: The ``PasscodeType`` to setup.
-    func setupPasscode(isPresented: Binding<Bool>, type: PasscodeType = .numeric(4)) -> some View {
-        modifier(PasscodeSetupViewModifier(isPresented: isPresented, type: type))
+    func setupPasscode(
+        isPresented: Binding<Bool>,
+        type: PasscodeType = .numeric(4),
+        onCompletion: ((Bool) -> Void)? = nil
+    ) -> some View {
+        modifier(PasscodeSetupViewModifier(isPresented: isPresented, type: type, onCompletion: onCompletion))
     }
 }

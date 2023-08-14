@@ -15,6 +15,7 @@ struct PasscodeCheckViewModifier: ViewModifier {
     @Environment(\.passcodeKey) private var passcodeKey
     
     @Binding var isPresented: Bool
+    var isTransparent: Bool
     var onCompletion: (Bool) -> Void
     
     func body(content: Content) -> some View {
@@ -22,11 +23,18 @@ struct PasscodeCheckViewModifier: ViewModifier {
             content
                 .fullScreenCover(isPresented: $isPresented) {
                     NavigationView {
-                        PasscodeInputView(passcode: passcode, canCancel: true) { success in
-                            onCompletion(success)
-                            isPresented = false
+                        ZStack {
+                            Color.clear
+                                .background(.regularMaterial, ignoresSafeAreaEdges: .all)
+                            
+                            PasscodeInputView(passcode: passcode, canCancel: true) { success in
+                                onCompletion(success)
+                                isPresented = false
+                            }
+                            .transparentBackground(isTransparent)
                         }
                     }
+                    .transparentBackground(isTransparent)
                 }
         } else {
             content
