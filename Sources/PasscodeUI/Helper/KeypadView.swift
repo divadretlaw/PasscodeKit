@@ -59,7 +59,8 @@ private struct NumberButton: View {
                 value.display
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .background(.thinMaterial)
+            .foregroundStyle(.primary)
+            .background(.ultraThinMaterial.blendMode(.multiply))
             .clipShape(Circle())
             .frame(maxWidth: 100, maxHeight: 100)
         }

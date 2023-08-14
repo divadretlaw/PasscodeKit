@@ -15,7 +15,7 @@ public extension View {
     ) -> some View where I: View {
         modifier {
             PasscodeViewModifierHelper(mode: mode, input: input) {
-                Color.clear
+                Color(uiColor: .systemBackground)
                     .modifier(BackgroundMaterialViewModifier(material: material))
             }
         }
@@ -59,7 +59,7 @@ public extension View {
     ) -> some View where I: View {
         modifier {
             PasscodeViewModifier(windowScene: windowScene, mode: mode, input: input) {
-                Color.clear
+                Color(uiColor: .systemBackground)
                     .modifier(BackgroundMaterialViewModifier(material: material))
             }
         }

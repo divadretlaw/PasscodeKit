@@ -13,7 +13,7 @@ struct DemoApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .passcode()
+                .passcode("Enter Passcode")
         }
     }
 }

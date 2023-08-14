@@ -13,9 +13,9 @@ import PasscodeUI
 struct PasscodeCheckViewModifier: ViewModifier {
     @Environment(\.passcodeKeychain) private var keychain
     @Environment(\.passcodeKey) private var passcodeKey
+    @Environment(\.passcodeBackgroundMaterial) private var backgroundMaterial
     
     @Binding var isPresented: Bool
-    var isTransparent: Bool
     var onCompletion: (Bool) -> Void
     
     func body(content: Content) -> some View {
@@ -24,17 +24,19 @@ struct PasscodeCheckViewModifier: ViewModifier {
                 .fullScreenCover(isPresented: $isPresented) {
                     NavigationView {
                         ZStack {
-                            Color.clear
-                                .background(.regularMaterial, ignoresSafeAreaEdges: .all)
+                            if let material = backgroundMaterial {
+                                Color.clear
+                                    .background(material, ignoresSafeAreaEdges: .all)
+                            }
                             
                             PasscodeInputView(passcode: passcode, canCancel: true) { success in
                                 onCompletion(success)
                                 isPresented = false
                             }
-                            .transparentBackground(isTransparent)
+                            .transparentBackground(hasBackground)
                         }
                     }
-                    .transparentBackground(isTransparent)
+                    .transparentBackground(hasBackground)
                 }
         } else {
             content
@@ -49,6 +51,10 @@ struct PasscodeCheckViewModifier: ViewModifier {
                     onCompletion(true)
                 }
         }
+    }
+    
+    var hasBackground: Bool {
+        backgroundMaterial != nil
     }
     
     var passcode: Passcode? {

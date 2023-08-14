@@ -10,19 +10,32 @@ import PasscodeCore
 import PasscodeModel
 import PasscodeUI
 
-struct PasscodeViewModifier: ViewModifier {
+struct PasscodeViewModifier<Hint>: ViewModifier where Hint: View {
     @Environment(\.passcodeKeychain) private var keychain
     @Environment(\.passcodeKey) private var passcodeKey
+    @Environment(\.passcodeBackgroundMaterial) private var backgroundMaterial
     
+    var title: Text?
     var mode: PasscodeMode
     var fallbackMode: PasscodeMode
+    var hint: Hint
     
     func body(content: Content) -> some View {
         content
-            .passcode(mode: computedMode) { dismiss in
+            .passcode(mode: computedMode, background: backgroundMaterial) { dismiss in
                 if let passcode = passcode {
-                    PasscodeInputView(passcode: passcode, canCancel: false) { _ in
-                        dismiss(animated: true)
+                    VStack {
+                        if let title = title {
+                            title
+                                .font(.headline)
+                                .padding(.top)
+                        }
+                        
+                        PasscodeInputView(passcode: passcode, canCancel: false) { _ in
+                            dismiss(animated: true)
+                        } hint: {
+                            hint
+                        }
                     }
                 }
             }
@@ -44,5 +57,14 @@ struct PasscodeViewModifier: ViewModifier {
     private var computedMode: PasscodeMode {
         guard isSetup else { return fallbackMode }
         return mode
+    }
+}
+
+extension PasscodeViewModifier where Hint == EmptyView {
+    init(title: Text? = nil, mode: PasscodeMode, fallbackMode: PasscodeMode) {
+        self.title = title
+        self.mode = mode
+        self.fallbackMode = fallbackMode
+        self.hint = EmptyView()
     }
 }

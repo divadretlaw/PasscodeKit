@@ -26,6 +26,12 @@ public extension EnvironmentValues {
         get { self[PasscodeKeyKey.self] }
         set { self[PasscodeKeyKey.self] = newValue }
     }
+    
+    /// The background material to use when presenting the passcode view.
+    var passcodeBackgroundMaterial: Material? {
+        get { self[PasscodeBackgroundMaterialKey.self] }
+        set { self[PasscodeBackgroundMaterialKey.self] = newValue }
+    }
 }
 
 struct PasscodeKeychainKey: EnvironmentKey {
@@ -46,3 +52,8 @@ struct PasscodeKeyKey: EnvironmentKey {
     }
 }
 
+struct PasscodeBackgroundMaterialKey: EnvironmentKey {
+    static var defaultValue: Material? {
+        .regular
+    }
+}

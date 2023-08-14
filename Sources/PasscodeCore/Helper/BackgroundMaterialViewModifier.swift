@@ -12,9 +12,12 @@ struct BackgroundMaterialViewModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         if let material = material {
-            content.background(material, ignoresSafeAreaEdges: .all)
+            content
+                .opacity(0)
+                .background(material, ignoresSafeAreaEdges: .all)
         } else {
             content
+                .ignoresSafeArea(edges: .all)
         }
     }
 }

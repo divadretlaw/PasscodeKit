@@ -1,4 +1,4 @@
-"passcode.title" = "Passcode";
+"passcode.enter.title" = "Enter Passcode";
 "passcode.create.title" = "Create Passcode";
 
 "passcode.enter.hint" = "Enter a new passcode";

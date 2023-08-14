@@ -50,7 +50,7 @@ public struct PasscodeInputView<Hint>: View where Hint: View {
             onCompletion: onCompletion,
             hint: hint
         )
-        .navigationTitle("passcode.title".localized())
+        .navigationTitle("passcode.enter.title".localized())
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {

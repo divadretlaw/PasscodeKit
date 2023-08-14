@@ -17,7 +17,8 @@ struct PasscodeViewModifierHelper<I, B>: ViewModifier where I: View, B: View {
         content
             .background {
                 WindowSceneReader { windowScene in
-                    Color.clear.modifier(PasscodeViewModifier(windowScene: windowScene, mode: mode, input: input, background: background))
+                    Color.clear
+                        .modifier(PasscodeViewModifier(windowScene: windowScene, mode: mode, input: input, background: background))
                 }
             }
     }

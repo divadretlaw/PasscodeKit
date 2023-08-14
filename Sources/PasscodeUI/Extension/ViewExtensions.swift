@@ -23,7 +23,7 @@ private struct TransparentBackground: UIViewRepresentable {
         
         DispatchQueue.main.async {
             guard let viewController = view.findViewController() else { return }
-            viewController.view.backgroundColor = isTransparent ? .clear : nil
+            viewController.view.backgroundColor = isTransparent ? .clear : .systemBackground
         }
         
         return view
@@ -31,7 +31,7 @@ private struct TransparentBackground: UIViewRepresentable {
     
     func updateUIView(_ uiView: UIView, context: Context) {
         guard let viewController = uiView.findViewController() else { return }
-        viewController.view.backgroundColor = isTransparent ? .clear : nil
+        viewController.view.backgroundColor = isTransparent ? .clear : .systemBackground
     }
 }
 
