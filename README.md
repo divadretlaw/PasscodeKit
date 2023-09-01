@@ -35,17 +35,16 @@ The passcode has to be setup by the user in order to be used, you can add this m
 .setupPasscode(isPresented: $setupPasscode, type: .numeric(6))
 ```
 
-To remove the passcode again, use the environment variables to access the Keychain and key used to store the passcode. You can also set these environment variables to override the used Keychain instance and key where the key that is used to store the data.
+To remove the passcode again, use the environment variables to access the . You can also set the manager environment variable to override the used Keychain instance and key where the key that is used to store the data.
 
 ```swift
-@Environment(\.passcodeKey) private var passcodeKey
-@Environment(\.passcodeKeychain) private var passcodeKeychain
+@Environment(\.passcodeManager) private var passcodeManager
 ```
 
 Then simply remove the entry for the passcode
 
 ```swift
-passcodeKeychain.delete(passcodeKey)
+passcodeManager.delete()
 ```
 
 ### PasscodeCore

@@ -8,7 +8,7 @@
 import Foundation
 import LocalAuthentication
 
-/// Passcode
+/// A type that represents a passcode
 public struct Passcode: Equatable, Hashable, Codable {
     /// The code of the passcode
     public var code: String
@@ -52,6 +52,7 @@ public struct Passcode: Equatable, Hashable, Codable {
         }
     }
     
+    /// Checks if biometrics are enabled
     public var isBiometricsEnabled: Bool {
         guard allowBiometrics == true else { return false }
         let context = LAContext()

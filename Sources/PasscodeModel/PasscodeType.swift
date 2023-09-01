@@ -60,7 +60,7 @@ public enum PasscodeType: Hashable, Equatable, Codable, Identifiable, Sendable {
         }
     }
     
-    // MARK: - Sendable
+    // MARK: - Identifiable
     
     public var id: String {
         switch self {

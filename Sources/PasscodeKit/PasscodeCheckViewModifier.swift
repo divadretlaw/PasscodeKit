@@ -11,8 +11,7 @@ import PasscodeModel
 import PasscodeUI
 
 struct PasscodeCheckViewModifier: ViewModifier {
-    @Environment(\.passcodeKeychain) private var keychain
-    @Environment(\.passcodeKey) private var passcodeKey
+    @Environment(\.passcodeManager) private var passcodeManager
     @Environment(\.passcodeBackgroundMaterial) private var backgroundMaterial
     
     @Binding var isPresented: Bool
@@ -20,7 +19,7 @@ struct PasscodeCheckViewModifier: ViewModifier {
     var onCompletion: (Bool) -> Void
     
     func body(content: Content) -> some View {
-        if let passcode = passcode {
+        if let passcode = passcodeManager.passcode {
             content
                 .fullScreenCover(isPresented: $isPresented) {
                     NavigationView {
@@ -56,14 +55,5 @@ struct PasscodeCheckViewModifier: ViewModifier {
     
     var hasBackground: Bool {
         backgroundMaterial != nil
-    }
-    
-    var passcode: Passcode? {
-        do {
-            guard let data = keychain.getData(passcodeKey) else { return nil }
-            return try JSONDecoder().decode(Passcode.self, from: data)
-        } catch {
-            return nil
-        }
     }
 }

@@ -11,8 +11,7 @@ import KeychainSwift
 import PasscodeModel
 
 struct ContentView: View {
-    @Environment(\.passcodeKey) private var passcodeKey
-    @Environment(\.passcodeKeychain) private var passcodeKeychain
+    @Environment(\.passcodeManager) private var passcodeManager
     
     @State private var setupPasscode = false
     @State private var passcodeType: PasscodeType = .numeric(4)
@@ -55,7 +54,7 @@ struct ContentView: View {
                 .disabled(!hasPasscode)
                 
                 Button(role: .destructive) {
-                    passcodeKeychain.delete(passcodeKey)
+                    passcodeManager.delete()
                     evaluatePasscode()
                 } label: {
                     Text("Delete Passcode")
@@ -99,7 +98,7 @@ struct ContentView: View {
     }
     
     func evaluatePasscode() {
-        hasPasscode = passcodeKeychain.get(passcodeKey) != nil
+        hasPasscode = passcodeManager.isSetup
     }
 }
 

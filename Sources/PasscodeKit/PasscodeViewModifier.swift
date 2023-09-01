@@ -11,8 +11,7 @@ import PasscodeModel
 import PasscodeUI
 
 struct PasscodeViewModifier<Hint>: ViewModifier where Hint: View {
-    @Environment(\.passcodeKeychain) private var keychain
-    @Environment(\.passcodeKey) private var passcodeKey
+    @Environment(\.passcodeManager) private var passcodeManager
     @Environment(\.passcodeBackgroundMaterial) private var backgroundMaterial
     
     var title: Text?
@@ -23,7 +22,7 @@ struct PasscodeViewModifier<Hint>: ViewModifier where Hint: View {
     func body(content: Content) -> some View {
         content
             .passcode(mode: computedMode, background: backgroundMaterial) { dismiss in
-                if let passcode = passcode {
+                if let passcode = passcodeManager.passcode {
                     VStack {
                         if let title = title {
                             title
@@ -41,21 +40,8 @@ struct PasscodeViewModifier<Hint>: ViewModifier where Hint: View {
             }
     }
     
-    private var isSetup: Bool {
-        keychain.get(passcodeKey) != nil
-    }
-    
-    private var passcode: Passcode? {
-        do {
-            guard let data = keychain.getData(passcodeKey) else { return nil }
-            return try JSONDecoder().decode(Passcode.self, from: data)
-        } catch {
-            return nil
-        }
-    }
-    
     private var computedMode: PasscodeMode {
-        guard isSetup else { return fallbackMode }
+        guard passcodeManager.isSetup else { return fallbackMode }
         return mode
     }
 }

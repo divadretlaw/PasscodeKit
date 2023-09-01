@@ -9,22 +9,10 @@ import SwiftUI
 import KeychainSwift
 
 public extension EnvironmentValues {
-    /// The `KeychainSwift` instance to store and read the passcode from.
-    var passcodeKeychain: KeychainSwift {
-        get { self[PasscodeKeychainKey.self] }
-        set { self[PasscodeKeychainKey.self] = newValue }
-    }
-    
-    /// The `KeychainSwiftAccessOptions` option to use when storing the passcode.
-    var passcodeKeychainAccessOption: KeychainSwiftAccessOptions? {
-        get { self[PasscodeKeychainAccessOptionKey.self] }
-        set { self[PasscodeKeychainAccessOptionKey.self] = newValue }
-    }
-    
-    /// The key to use when storing and reading the passcode.
-    var passcodeKey: String {
-        get { self[PasscodeKeyKey.self] }
-        set { self[PasscodeKeyKey.self] = newValue }
+    /// The ``PasscodeManager`` to manage the passcode.
+    var passcodeManager: PasscodeManager {
+        get { self[PasscodeManagerKey.self] }
+        set { self[PasscodeManagerKey.self] = newValue }
     }
     
     /// The background material to use when presenting the passcode view.
@@ -34,21 +22,9 @@ public extension EnvironmentValues {
     }
 }
 
-struct PasscodeKeychainKey: EnvironmentKey {
-    static var defaultValue: KeychainSwift {
-        KeychainSwift()
-    }
-}
-
-struct PasscodeKeychainAccessOptionKey: EnvironmentKey {
-    static var defaultValue: KeychainSwiftAccessOptions? {
-        nil
-    }
-}
-
-struct PasscodeKeyKey: EnvironmentKey {
-    static var defaultValue: String {
-        "PasscodeKit.Passcode"
+struct PasscodeManagerKey: EnvironmentKey {
+    static var defaultValue: PasscodeManager {
+        PasscodeManager()
     }
 }
 

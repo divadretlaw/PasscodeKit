@@ -11,9 +11,7 @@ import PasscodeModel
 import PasscodeUI
 
 struct PasscodeSetupViewModifier: ViewModifier {
-    @Environment(\.passcodeKeychain) private var keychain
-    @Environment(\.passcodeKey) private var passcodeKey
-    @Environment(\.passcodeKeychainAccessOption) private var keychainAccessOption
+    @Environment(\.passcodeManager) private var passcodeManager
     
     @Binding var isPresented: Bool
     var type: PasscodeType
@@ -26,15 +24,9 @@ struct PasscodeSetupViewModifier: ViewModifier {
                     PasscodeSetupView(type: type) { code in
                         defer { self.isPresented = false }
                         
-                        do {
-                            let data = try JSONEncoder().encode(code)
-                            keychain.set(data, forKey: passcodeKey, withAccess: keychainAccessOption)
-                            onCompletion?(true)
-                        } catch {
-                            print(error.localizedDescription)
-                            keychain.delete(passcodeKey)
-                            onCompletion?(false)
-                        }
+                        let result = passcodeManager.setPasscode(code)
+                        onCompletion?(result)
+                        
                     }
                 }
             }
