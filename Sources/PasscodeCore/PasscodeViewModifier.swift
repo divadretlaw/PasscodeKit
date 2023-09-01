@@ -24,6 +24,7 @@ struct PasscodeViewModifierHelper<I, B>: ViewModifier where I: View, B: View {
     }
 }
 
+@MainActor
 struct PasscodeViewModifier<I, B>: ViewModifier where I: View, B: View {
     var windowScene: UIWindowScene
     var mode: PasscodeMode

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PasscodeKit
+import SimulatorStatusMagic
 
 @main
 struct DemoApp: App {
@@ -14,6 +15,9 @@ struct DemoApp: App {
         WindowGroup {
             ContentView()
                 .passcode("Enter Passcode")
+                .onAppear {
+//                    SDStatusBarManager.sharedInstance().enableOverrides()
+                }
         }
     }
 }

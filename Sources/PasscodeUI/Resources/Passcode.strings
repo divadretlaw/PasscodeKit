@@ -5,5 +5,10 @@
 "passcode.enter.again.hint" = "Please re-enter your passcode";
 "passcode.enter.failed.hint" = "Passcodes did not match. Try again";
 
+"passcode.biometrics.hint" = "Face ID is needed to unlock the app.";
+"passcode.biometrics.setup.button" = "Continue";
+"passcode.biometrics.setup.message" = "Do you want to enable %@ to unlock the app?";
+"passcode.biometrics.setup.cancel" = "Setup later";
+
 "ok" = "OK";
 "cancel" = "Cancel";

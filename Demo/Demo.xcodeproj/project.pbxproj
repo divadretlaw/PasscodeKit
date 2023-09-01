@@ -11,6 +11,8 @@
 		633B75C02A8A118C00CD66E3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633B75BF2A8A118C00CD66E3 /* ContentView.swift */; };
 		633B75C22A8A118D00CD66E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 633B75C12A8A118D00CD66E3 /* Assets.xcassets */; };
 		633B75CF2A8A11E000CD66E3 /* PasscodeKit in Frameworks */ = {isa = PBXBuildFile; productRef = 633B75CE2A8A11E000CD66E3 /* PasscodeKit */; };
+		63540F5B2A8A6B5C00C127EF /* RainbowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63540F5A2A8A6B5C00C127EF /* RainbowView.swift */; };
+		63540F5E2A8A6CEE00C127EF /* SimulatorStatusMagic in Frameworks */ = {isa = PBXBuildFile; productRef = 63540F5D2A8A6CEE00C127EF /* SimulatorStatusMagic */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +21,7 @@
 		633B75BF2A8A118C00CD66E3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		633B75C12A8A118D00CD66E3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		633B75CC2A8A119800CD66E3 /* PasscodeKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = PasscodeKit; path = ..; sourceTree = "<group>"; };
+		63540F5A2A8A6B5C00C127EF /* RainbowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RainbowView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,6 +30,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				633B75CF2A8A11E000CD66E3 /* PasscodeKit in Frameworks */,
+				63540F5E2A8A6CEE00C127EF /* SimulatorStatusMagic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,6 +58,7 @@
 			isa = PBXGroup;
 			children = (
 				633B75BD2A8A118C00CD66E3 /* DemoApp.swift */,
+				63540F5A2A8A6B5C00C127EF /* RainbowView.swift */,
 				633B75BF2A8A118C00CD66E3 /* ContentView.swift */,
 				633B75C12A8A118D00CD66E3 /* Assets.xcassets */,
 			);
@@ -86,6 +91,7 @@
 			name = Demo;
 			packageProductDependencies = (
 				633B75CE2A8A11E000CD66E3 /* PasscodeKit */,
+				63540F5D2A8A6CEE00C127EF /* SimulatorStatusMagic */,
 			);
 			productName = Demo;
 			productReference = 633B75BA2A8A118C00CD66E3 /* Demo.app */;
@@ -115,6 +121,9 @@
 				Base,
 			);
 			mainGroup = 633B75B12A8A118C00CD66E3;
+			packageReferences = (
+				63540F5C2A8A6CEE00C127EF /* XCRemoteSwiftPackageReference "SimulatorStatusMagic" */,
+			);
 			productRefGroup = 633B75BB2A8A118C00CD66E3 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -140,6 +149,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63540F5B2A8A6B5C00C127EF /* RainbowView.swift in Sources */,
 				633B75C02A8A118C00CD66E3 /* ContentView.swift in Sources */,
 				633B75BE2A8A118C00CD66E3 /* DemoApp.swift in Sources */,
 			);
@@ -271,6 +281,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Face ID to unlock the app.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -299,6 +310,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Face ID to unlock the app.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -341,10 +353,26 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		63540F5C2A8A6CEE00C127EF /* XCRemoteSwiftPackageReference "SimulatorStatusMagic" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/shinydevelopment/SimulatorStatusMagic.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		633B75CE2A8A11E000CD66E3 /* PasscodeKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = PasscodeKit;
+		};
+		63540F5D2A8A6CEE00C127EF /* SimulatorStatusMagic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 63540F5C2A8A6CEE00C127EF /* XCRemoteSwiftPackageReference "SimulatorStatusMagic" */;
+			productName = SimulatorStatusMagic;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

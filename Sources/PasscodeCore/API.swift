@@ -51,6 +51,7 @@ public extension View {
 // MARK: - UIWindowScene
 
 public extension View {
+    @MainActor
     func passcode<I>(
         on windowScene: UIWindowScene,
         mode: PasscodeMode = .default,
@@ -65,6 +66,7 @@ public extension View {
         }
     }
     
+    @MainActor
     func passcode<I, B>(
         on windowScene: UIWindowScene,
         mode: PasscodeMode = .default,
@@ -76,12 +78,14 @@ public extension View {
     
     // MARK: Privacy View
     
+    @MainActor
     func privacyView(on windowScene: UIWindowScene, background material: Material? = .regular) -> some View {
         passcode(on: windowScene, mode: .hideInAppSwitcher, background: material) { _ in
             EmptyView()
         }
     }
     
+    @MainActor
     func privacyView<B>(
         on windowScene: UIWindowScene,
         @ViewBuilder background: @escaping () -> B

@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "simulatorstatusmagic",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/shinydevelopment/SimulatorStatusMagic.git",
+      "state" : {
+        "revision" : "76095ec820674457a11dc3cc621d8a5c369eea0e",
+        "version" : "2.7.0"
+      }
+    },
+    {
       "identity" : "swiftui-introspect",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/siteline/swiftui-introspect",

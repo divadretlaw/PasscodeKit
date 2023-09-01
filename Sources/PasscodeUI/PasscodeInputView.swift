@@ -7,9 +7,11 @@
 
 import SwiftUI
 import PasscodeModel
+import LocalAuthentication
 
 public struct PasscodeInputView<Hint>: View where Hint: View {
     var type: PasscodeType
+    var allowBiometrics: Bool = true
     var canCancel: Bool
     var check: (String) -> Bool
     var onCompletion: (Bool) -> Void
@@ -17,11 +19,13 @@ public struct PasscodeInputView<Hint>: View where Hint: View {
     
     public init(
         passcode: Passcode,
+        allowBiometrics: Bool = true,
         canCancel: Bool = false,
         onCompletion: @escaping (Bool) -> Void,
         @ViewBuilder hint: @escaping () -> Hint
     ) {
         self.type = passcode.type
+        self.allowBiometrics = passcode.isBiometricsEnabled && allowBiometrics
         self.canCancel = canCancel
         self.check = { passcode.code == $0 }
         self.onCompletion = onCompletion
@@ -30,12 +34,14 @@ public struct PasscodeInputView<Hint>: View where Hint: View {
     
     public init(
         type: PasscodeType,
+        allowBiometrics: Bool = true,
         canCancel: Bool = false,
         check: @escaping (String) -> Bool,
         onCompletion: @escaping (Bool) -> Void,
         @ViewBuilder hint: @escaping () -> Hint
     ) {
         self.type = type
+        self.allowBiometrics = allowBiometrics
         self.canCancel = canCancel
         self.check = check
         self.onCompletion = onCompletion
@@ -50,6 +56,22 @@ public struct PasscodeInputView<Hint>: View where Hint: View {
             onCompletion: onCompletion,
             hint: hint
         )
+        .task {
+            guard allowBiometrics else { return }
+            let context = LAContext()
+            var error: NSError?
+            
+            guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else { return }
+            let reason = "passcode.biometrics.reason".localized()
+            
+            do {
+                let success = try await context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason)
+                guard success else { return }
+                onCompletion(true)
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
         .navigationTitle("passcode.enter.title".localized())
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -69,11 +91,13 @@ public struct PasscodeInputView<Hint>: View where Hint: View {
 extension PasscodeInputView where Hint == EmptyView {
     public init(
         type: PasscodeType,
+        allowBiometrics: Bool = true,
         canCancel: Bool = false,
         check: @escaping (String) -> Bool,
         onCompletion: @escaping (Bool) -> Void
     ) {
         self.type = type
+        self.allowBiometrics = allowBiometrics
         self.canCancel = canCancel
         self.check = check
         self.onCompletion = onCompletion
@@ -82,10 +106,12 @@ extension PasscodeInputView where Hint == EmptyView {
     
     public init(
         passcode: Passcode,
+        allowBiometrics: Bool = true,
         canCancel: Bool = false,
         onCompletion: @escaping (Bool) -> Void
     ) {
         self.type = passcode.type
+        self.allowBiometrics = passcode.isBiometricsEnabled && allowBiometrics
         self.canCancel = canCancel
         self.check = { passcode.code == $0 }
         self.onCompletion = onCompletion

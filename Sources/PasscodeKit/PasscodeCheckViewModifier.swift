@@ -16,6 +16,7 @@ struct PasscodeCheckViewModifier: ViewModifier {
     @Environment(\.passcodeBackgroundMaterial) private var backgroundMaterial
     
     @Binding var isPresented: Bool
+    var allowBiometrics: Bool = false
     var onCompletion: (Bool) -> Void
     
     func body(content: Content) -> some View {
@@ -29,7 +30,7 @@ struct PasscodeCheckViewModifier: ViewModifier {
                                     .background(material, ignoresSafeAreaEdges: .all)
                             }
                             
-                            PasscodeInputView(passcode: passcode, canCancel: true) { success in
+                            PasscodeInputView(passcode: passcode, allowBiometrics: allowBiometrics, canCancel: true) { success in
                                 onCompletion(success)
                                 isPresented = false
                             }

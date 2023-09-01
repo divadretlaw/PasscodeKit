@@ -63,6 +63,15 @@ struct ContentView: View {
                 .disabled(!hasPasscode)
                 
                 Section {
+                    NavigationLink {
+                        VStack(spacing: 0) {
+                            RainbowView()
+                        }
+                        .ignoresSafeArea()
+                    } label: {
+                        Text("Rainbow")
+                    }
+
                     Group {
                         Color.red
                         Color.orange

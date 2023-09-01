@@ -7,15 +7,26 @@
 
 import SwiftUI
 import PasscodeModel
+import LocalAuthentication
 
 public struct PasscodeSetupView: View {
     @Environment(\.dismiss) private var dismiss
     
+    enum Step: String, Identifiable {
+        case initial
+        case reEnter
+        
+        var id: String { rawValue }
+    }
+    
     var type: PasscodeType
+    var allowBiometrics: Bool
     var onCompletion: (Passcode) -> Void
     
     @State private var code = ""
+    @State private var currentStep: Step = .initial
     @State private var showNext = false
+    @State private var showBiometrics = false
     
     @State private var input1 = ""
     @State private var input2 = ""
@@ -27,24 +38,55 @@ public struct PasscodeSetupView: View {
     
     public init(
         type: PasscodeType,
+        allowBiometrics: Bool = true,
         onCompletion: @escaping (Passcode) -> Void
     ) {
         self.type = type
+        self.allowBiometrics = allowBiometrics
         self.onCompletion = onCompletion
     }
     
     public var body: some View {
         ZStack {
-            if !showNext {
+            switch currentStep {
+            case .initial:
                 inputView
                     .zIndex(0)
                     .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
-            }
-            
-            if showNext {
+            case .reEnter:
                 reEnterInputView
                     .zIndex(1)
                     .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .trailing)))
+            }
+        }
+        .confirmationDialog(localizedBiometrics ?? "", isPresented: $showBiometrics, titleVisibility: localizedBiometrics != nil ? .visible : .hidden) {
+            Button {
+                Task {
+                    let context = LAContext()
+                    do {
+                        let reason = "passcode.biometrics.reason".localized()
+                        let success = try await context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason)
+                        if success {
+                            onCompletion(Passcode(code, type: type, allowBiometrics: true))
+                        } else {
+                            showBiometrics = true
+                        }
+                    } catch {
+                        showBiometrics = true
+                    }
+                }
+            } label: {
+                Text(verbatim: "passcode.biometrics.setup.button".localized())
+            }
+            
+            Button(role: .cancel) {
+                onCompletion(Passcode(code, type: type, allowBiometrics: false))
+            } label: {
+                Text(verbatim: "passcode.biometrics.setup.cancel".localized())
+            }
+        } message: {
+            if let localizedBiometrics {
+                Text(verbatim: String(format: "passcode.biometrics.setup.message".localized(), localizedBiometrics))
             }
         }
         .animation(.default, value: showNext)
@@ -66,7 +108,7 @@ public struct PasscodeSetupView: View {
             self.code = code
             return true
         } onCompletion: { _ in
-            showNext = true
+            currentStep = .reEnter
         } hint: {
             if numberOfAttempts > 0 {
                 Text("passcode.enter.failed.hint".localized())
@@ -84,7 +126,11 @@ public struct PasscodeSetupView: View {
                 return fail()
             }
         } onCompletion: { success in
-            onCompletion(Passcode(code, type: type))
+            if allowBiometrics, canUseBiometrics {
+                showBiometrics = true
+            } else {
+                onCompletion(Passcode(code, type: type, allowBiometrics: false))
+            }
         } hint: {
             Text("passcode.enter.again.hint".localized())
         }
@@ -93,9 +139,26 @@ public struct PasscodeSetupView: View {
         }
     }
     
+    var canUseBiometrics: Bool {
+        let context = LAContext()
+        var error: NSError?
+        return context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
+    }
+    
+    var localizedBiometrics: String? {
+        switch LAContext().biometryType {
+        case .faceID:
+            return "Face ID"
+        case .touchID:
+            return "Touch ID"
+        default:
+            return nil
+        }
+    }
+    
     func fail() -> Bool {
         withAnimation(.default) {
-            showNext = false
+            currentStep = .initial
             numberOfAttempts += 1
             
             self.task = Task { @MainActor in

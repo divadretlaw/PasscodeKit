@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import LocalAuthentication
 
 /// Passcode
 public struct Passcode: Equatable, Hashable, Codable {
@@ -13,10 +14,13 @@ public struct Passcode: Equatable, Hashable, Codable {
     public var code: String
     /// The type of the passcode
     public var type: PasscodeType
+
+    private var allowBiometrics: Bool?
     
-    public init(_ code: String, type: PasscodeType) {
+    public init(_ code: String, type: PasscodeType, allowBiometrics: Bool = true) {
         self.code = code
         self.type = type
+        self.allowBiometrics = allowBiometrics
     }
     
     /// Checks if the code is empty.
@@ -46,5 +50,12 @@ public struct Passcode: Equatable, Hashable, Codable {
         case .customNumeric, .alphanumeric:
             return nil
         }
+    }
+    
+    public var isBiometricsEnabled: Bool {
+        guard allowBiometrics == true else { return false }
+        let context = LAContext()
+        var error: NSError?
+        return context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
     }
 }

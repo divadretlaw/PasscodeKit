@@ -101,9 +101,14 @@ public extension View {
     ///
     /// - Parameters:
     ///   - isPresented: A binding to a Boolean value that determines whether to present the passcode view.
+    ///   - allowBiometrics: Allow to identify using biometrics.
     ///   - onCompletion: The closure to execute when the passcode was checked.
-    func checkPasscode(isPresented: Binding<Bool>, onCompletion: @escaping (Bool) -> Void) -> some View {
-        modifier(PasscodeCheckViewModifier(isPresented: isPresented, onCompletion: onCompletion))
+    func checkPasscode(
+        isPresented: Binding<Bool>,
+        allowBiometrics: Bool = false,
+        onCompletion: @escaping (Bool) -> Void
+    ) -> some View {
+        modifier(PasscodeCheckViewModifier(isPresented: isPresented, allowBiometrics: allowBiometrics, onCompletion: onCompletion))
     }
     
     /// Setup a passcode
