@@ -18,7 +18,7 @@ public enum PasscodeMode: Int, Hashable, Equatable, Codable, Identifiable, Senda
     /// The passcode view will never appear.
     case disabled
     
-    /// The default mode
+    /// The default mode. The default mode is ``hideInAppSwitcher``
     public static var `default`: PasscodeMode { .hideInAppSwitcher }
     
     // MARK: - Sendable

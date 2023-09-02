@@ -8,7 +8,8 @@
 import SwiftUI
 import WindowSceneReader
 
-struct PasscodeViewModifierHelper<I, B>: ViewModifier where I: View, B: View {
+/// Helper to read the current `UIWindowScene` without having to provide one
+@MainActor struct PasscodeViewModifierHelper<I, B>: ViewModifier where I: View, B: View {
     var mode: PasscodeMode
     @ViewBuilder var input: (_ dismiss: DismissPasscodeAction) -> I
     @ViewBuilder var background: () -> B
@@ -24,12 +25,16 @@ struct PasscodeViewModifierHelper<I, B>: ViewModifier where I: View, B: View {
     }
 }
 
-@MainActor
-struct PasscodeViewModifier<I, B>: ViewModifier where I: View, B: View {
+/// Handle the automatic passcode presentation
+@MainActor struct PasscodeViewModifier<I, B>: ViewModifier where I: View, B: View {
     var windowScene: UIWindowScene
     var mode: PasscodeMode
     @ViewBuilder var input: (_ dismiss: DismissPasscodeAction) -> I
     @ViewBuilder var background: () -> B
+    
+    @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.passcode.colorScheme) private var passcodeColorScheme
+    @Environment(\.passcode.animatedDismissDuration) private var animatedDismissDuration
     
     @State private var isShowingPasscode = false
     @State private var window: UIWindow?
@@ -93,6 +98,7 @@ struct PasscodeViewModifier<I, B>: ViewModifier where I: View, B: View {
         }
         
         let window = UIWindow(windowScene: windowScene)
+        window.overrideUserInterfaceStyle = userInterfaceStyle
         window.rootViewController = PasscodeBlurViewController(rootView: rootView)
         window.makeKeyAndVisible()
         
@@ -103,7 +109,7 @@ struct PasscodeViewModifier<I, B>: ViewModifier where I: View, B: View {
         guard let window = window else { return }
         
         if animated {
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: animatedDismissDuration) {
                 window.alpha = 0
             } completion: { _ in
                 window.resignKey()
@@ -112,6 +118,17 @@ struct PasscodeViewModifier<I, B>: ViewModifier where I: View, B: View {
         } else {
             window.resignKey()
             self.window = nil
+        }
+    }
+    
+    private var userInterfaceStyle: UIUserInterfaceStyle {
+        switch passcodeColorScheme ?? colorScheme {
+        case .light:
+            return .light
+        case .dark:
+            return .dark
+        @unknown default:
+            return .unspecified
         }
     }
 }

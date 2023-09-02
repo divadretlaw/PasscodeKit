@@ -7,16 +7,17 @@
 
 import SwiftUI
 import KeychainSwift
+import PasscodeCore
 
-public extension EnvironmentValues {
+public extension PasscodeEnvironmentValues {
     /// The ``PasscodeManager`` to manage the passcode.
-    var passcodeManager: PasscodeManager {
+    var manager: PasscodeManager {
         get { self[PasscodeManagerKey.self] }
         set { self[PasscodeManagerKey.self] = newValue }
     }
     
     /// The background material to use when presenting the passcode view.
-    var passcodeBackgroundMaterial: Material? {
+    var backgroundMaterial: Material? {
         get { self[PasscodeBackgroundMaterialKey.self] }
         set { self[PasscodeBackgroundMaterialKey.self] = newValue }
     }

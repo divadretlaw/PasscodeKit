@@ -8,6 +8,14 @@
 import SwiftUI
 
 public extension View {
+    /// Automatially present a passcode
+    ///
+    /// - Parameters:
+    ///   - mode: The mode to present the passcode.
+    ///   - material: The background material of the passcode view.
+    ///   - input: The passcode input view. Call the given `dismiss` action when the passcode was validated.
+    ///
+    /// - Returns: A view with a passcode enabled.
     func passcode<I>(
         mode: PasscodeMode = .default,
         background material: Material? = .regular,
@@ -21,6 +29,13 @@ public extension View {
         }
     }
     
+    /// Automatially present a passcode
+    ///
+    /// - Parameters:
+    ///   - mode: The mode to present the passcode.
+    ///   - input: The passcode input view. Call the given `dismiss` action when the passcode was validated.
+    ///   - background: The background view of the passcode view.
+    /// - Returns: A view with a passcode enabled.
     func passcode<I, B>(
         mode: PasscodeMode = .default,
         @ViewBuilder input: @escaping (_ dismiss: DismissPasscodeAction) -> I,

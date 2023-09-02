@@ -17,6 +17,12 @@ public struct Passcode: Equatable, Hashable, Codable {
 
     private var allowBiometrics: Bool?
     
+    /// Create a new ``Passcode``
+    ///
+    /// - Parameters:
+    ///   - code: The code to use.
+    ///   - type: The type of the passcode.
+    ///   - allowBiometrics: Whether the passcode allows biometrics.
     public init(_ code: String, type: PasscodeType, allowBiometrics: Bool = true) {
         self.code = code
         self.type = type

@@ -9,9 +9,13 @@ import Foundation
 import KeychainSwift
 import PasscodeModel
 
+/// Manage the passcode of your app
 public final class PasscodeManager {
+    /// The key of the stored passcode item in the keychain.
     public private(set) var key: String
+    /// The keychain implementation where the passcode item is stored in.
     public private(set) var keychain: KeychainSwift
+    /// These options are used to determine when the passcode item should be readable.
     private var keychainAccess: KeychainSwiftAccessOptions?
     
     public init(
@@ -67,7 +71,8 @@ public final class PasscodeManager {
     
     /// Enabled (or disables) biometrics on the current passcode.
     ///
-    /// - Parameter enabled: Whether to allow biometrics or not.
+    /// - Parameters:
+    ///     - enabled: Whether to allow biometrics or not.
     /// - Returns: True if the passcode was successfully stored.
     @discardableResult public func setBiometrics(_ enabled: Bool) -> Bool {
         guard let passcode = passcode else { return false }
@@ -76,7 +81,6 @@ public final class PasscodeManager {
     
     /// Deletes the current passcode.
     ///
-    /// - Parameter enabled: Whether to allow biometrics or not.
     /// - Returns: True if the passcode was successfully deleted.
     @discardableResult public func delete() -> Bool{
         keychain.delete(key)

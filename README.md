@@ -38,7 +38,7 @@ The passcode has to be setup by the user in order to be used, you can add this m
 To remove the passcode again, use the environment variables to access the . You can also set the manager environment variable to override the used Keychain instance and key where the key that is used to store the data.
 
 ```swift
-@Environment(\.passcodeManager) private var passcodeManager
+@Environment(\.passcode.manager) private var passcodeManager
 ```
 
 Then simply remove the entry for the passcode

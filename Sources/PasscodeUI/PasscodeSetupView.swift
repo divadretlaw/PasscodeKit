@@ -25,14 +25,9 @@ public struct PasscodeSetupView: View {
     
     @State private var code = ""
     @State private var currentStep: Step = .initial
-    @State private var showNext = false
     @State private var showBiometrics = false
     
-    @State private var input1 = ""
-    @State private var input2 = ""
-    
     @State private var numberOfAttempts = 0
-    @State private var isDisabled = false
     
     @State private var task: Task<Void, Never>?
     
@@ -61,7 +56,7 @@ public struct PasscodeSetupView: View {
         }
         .confirmationDialog(localizedBiometrics ?? "", isPresented: $showBiometrics, titleVisibility: localizedBiometrics != nil ? .visible : .hidden) {
             Button {
-                Task {
+                self.task = Task { @MainActor in
                     let context = LAContext()
                     do {
                         let reason = "passcode.biometrics.reason".localized()
@@ -89,7 +84,7 @@ public struct PasscodeSetupView: View {
                 Text(verbatim: String(format: "passcode.biometrics.setup.message".localized(), localizedBiometrics))
             }
         }
-        .animation(.default, value: showNext)
+        .animation(.default, value: currentStep)
         .navigationTitle("passcode.create.title".localized())
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -177,9 +172,8 @@ public struct PasscodeSetupView: View {
     }
     
     func reset() {
-        input1 = ""
-        input2 = ""
-        isDisabled = false
+        code = ""
+        currentStep = .initial
     }
 }
 

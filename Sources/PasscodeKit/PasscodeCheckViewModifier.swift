@@ -11,8 +11,8 @@ import PasscodeModel
 import PasscodeUI
 
 struct PasscodeCheckViewModifier: ViewModifier {
-    @Environment(\.passcodeManager) private var passcodeManager
-    @Environment(\.passcodeBackgroundMaterial) private var backgroundMaterial
+    @Environment(\.passcode.manager) private var passcodeManager
+    @Environment(\.passcode.backgroundMaterial) private var backgroundMaterial
     
     @Binding var isPresented: Bool
     var allowBiometrics: Bool = false

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PasscodeRootView<P, B>: View where P: View, B: View {
-    @Environment(\.dismissPasscode) private var dismiss
+    @Environment(\.passcode.dismiss) private var dismiss
     
     @Binding var isShowingPasscode: Bool
     

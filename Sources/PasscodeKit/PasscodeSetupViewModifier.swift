@@ -11,7 +11,7 @@ import PasscodeModel
 import PasscodeUI
 
 struct PasscodeSetupViewModifier: ViewModifier {
-    @Environment(\.passcodeManager) private var passcodeManager
+    @Environment(\.passcode.manager) private var passcodeManager
     
     @Binding var isPresented: Bool
     var type: PasscodeType

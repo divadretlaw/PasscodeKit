@@ -11,8 +11,8 @@ import PasscodeModel
 import PasscodeUI
 
 struct PasscodeViewModifier<Hint>: ViewModifier where Hint: View {
-    @Environment(\.passcodeManager) private var passcodeManager
-    @Environment(\.passcodeBackgroundMaterial) private var backgroundMaterial
+    @Environment(\.passcode.manager) private var passcodeManager
+    @Environment(\.passcode.backgroundMaterial) private var backgroundMaterial
     
     var title: Text?
     var mode: PasscodeMode

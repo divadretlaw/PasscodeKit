@@ -11,7 +11,7 @@ import KeychainSwift
 import PasscodeModel
 
 struct ContentView: View {
-    @Environment(\.passcodeManager) private var passcodeManager
+    @Environment(\.passcode.manager) private var passcodeManager
     
     @State private var setupPasscode = false
     @State private var passcodeType: PasscodeType = .numeric(4)
