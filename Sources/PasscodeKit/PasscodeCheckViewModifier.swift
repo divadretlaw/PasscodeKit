@@ -7,8 +7,6 @@
 
 import SwiftUI
 import PasscodeCore
-import PasscodeModel
-import PasscodeUI
 
 struct PasscodeCheckViewModifier: ViewModifier {
     @Environment(\.passcode.manager) private var passcodeManager

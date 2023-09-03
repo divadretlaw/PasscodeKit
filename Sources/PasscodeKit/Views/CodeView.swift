@@ -1,14 +1,15 @@
 //
 //  CodeView.swift
-//  PasscodeUI
+//  PasscodeKit
 //
 //  Created by David Walter on 12.08.23.
 //
 
 import SwiftUI
-import PasscodeModel
+import PasscodeCore
 
 struct CodeView: View {
+    @Environment(\.passcode.codeViewConfiguration) private var configuration
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     
     var passcode: Passcode
@@ -48,31 +49,33 @@ struct CodeView: View {
     }
     
     func bulletView(for count: Int) -> some View {
-        HStack(spacing: 20) {
+        HStack(spacing: configuration.spacing) {
             ForEach(0 ..< count, id: \.self) { index in
                 if index < passcode.code.count {
-                    Image(systemName: "circle.fill")
+                    configuration.filledImage
                 } else {
-                    Image(systemName: "circle")
+                    configuration.emptyImage
                 }
             }
         }
+        .foregroundColor(configuration.foregroundColor)
     }
     
     var fieldView: some View {
         HStack {
             if passcode.isEmpty {
-                Image(systemName: "circle").hidden()
+                configuration.emptyImage.hidden()
             } else {
                 ForEach(0 ..< passcode.code.count, id: \.self) { index in
                     if index < passcode.code.count {
-                        Image(systemName: "circle.fill")
+                        configuration.filledImage
                     } else {
-                        Image(systemName: "circle")
+                        configuration.emptyImage
                     }
                 }
             }
         }
+        .foregroundColor(configuration.foregroundColor)
         .readSize(into: $inputSize)
         .padding(.horizontal, 8)
         .frame(width: parentSize.width, alignment: alignment)
@@ -80,7 +83,7 @@ struct CodeView: View {
         .clipped(antialiased: true)
         .overlay {
             RoundedRectangle(cornerRadius: 10)
-                .stroke(lineWidth: 2)
+                .stroke(configuration.foregroundColor, lineWidth: 2)
                 .frame(width: parentSize.width - 4)
         }
     }

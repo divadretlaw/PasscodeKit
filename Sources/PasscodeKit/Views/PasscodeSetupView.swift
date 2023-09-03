@@ -1,12 +1,12 @@
 //
 //  PasscodeSetupView.swift
-//  PasscodeUI
+//  PasscodeKit
 //
 //  Created by David Walter on 12.08.23.
 //
 
 import SwiftUI
-import PasscodeModel
+import PasscodeCore
 import LocalAuthentication
 
 public struct PasscodeSetupView: View {

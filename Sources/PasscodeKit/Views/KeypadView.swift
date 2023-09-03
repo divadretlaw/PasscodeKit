@@ -1,6 +1,6 @@
 //
 //  KeypadView.swift
-//  PasscodeUI
+//  PasscodeKit
 //
 //  Created by David Walter on 12.08.23.
 //
@@ -8,28 +8,28 @@
 import SwiftUI
 
 struct KeypadView: View {
+    @Environment(\.passcode.keypadViewConfiguration) private var configuration
+    
     @Binding var text: String
-    var vSpacing: CGFloat? = 20
-    var hSpacing: CGFloat? = 40
     
     var body: some View {
-        VStack(alignment: .center, spacing: vSpacing) {
-            HStack(spacing: hSpacing) {
+        VStack(alignment: .center, spacing: configuration.vSpacing) {
+            HStack(spacing: configuration.hSpacing) {
                 NumberButton(value: .text("1"), text: $text)
                 NumberButton(value: .text("2"), text: $text)
                 NumberButton(value: .text("3"), text: $text)
             }
-            HStack(spacing: hSpacing) {
+            HStack(spacing: configuration.hSpacing) {
                 NumberButton(value: .text("4"), text: $text)
                 NumberButton(value: .text("5"), text: $text)
                 NumberButton(value: .text("6"), text: $text)
             }
-            HStack(spacing: hSpacing) {
+            HStack(spacing: configuration.hSpacing) {
                 NumberButton(value: .text("7"), text: $text)
                 NumberButton(value: .text("8"), text: $text)
                 NumberButton(value: .text("9"), text: $text)
             }
-            HStack(spacing: hSpacing) {
+            HStack(spacing: configuration.hSpacing) {
                 NumberButton(value: .blank, text: $text)
                     .hidden()
                     .disabled(true)
@@ -41,6 +41,8 @@ struct KeypadView: View {
 }
 
 private struct NumberButton: View {
+    @Environment(\.passcode.keypadViewConfiguration) private var configuration
+    
     let value: PasscodeInputValue
     @Binding var text: String
     
@@ -56,15 +58,30 @@ private struct NumberButton: View {
             }
         } label: {
             ZStack {
-                value.display
+                display
+                    .foregroundColor(configuration.foregroundColor)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             .foregroundStyle(.primary)
             .background(.ultraThinMaterial.blendMode(.multiply))
-            .clipShape(Circle())
-            .frame(maxWidth: 100, maxHeight: 100)
         }
         .buttonStyle(.plain)
+        .frame(maxWidth: 100, maxHeight: 100)
+        .clipShape(Circle())
+    }
+    
+    @ViewBuilder
+    var display: some View {
+        switch value {
+        case let .text(value):
+            Text(value)
+                .font(.title)
+        case .delete:
+            configuration.deleteImage
+                .imageScale(.large)
+        default:
+            EmptyView()
+        }
     }
 }
 
@@ -72,22 +89,6 @@ enum PasscodeInputValue: Hashable {
     case text(String)
     case delete
     case blank
-}
-
-extension PasscodeInputValue {
-    @ViewBuilder
-    var display: some View {
-        switch self {
-        case let .text(value):
-            Text(value)
-                .font(.title)
-        case .delete:
-            Image(systemName: "delete.left")
-                .imageScale(.large)
-        default:
-            EmptyView()
-        }
-    }
 }
 
 struct KeypadView_Previews: PreviewProvider {

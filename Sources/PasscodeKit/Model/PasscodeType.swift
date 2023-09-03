@@ -1,6 +1,6 @@
 //
 //  PasscodeType.swift
-//  PasscodeModel
+//  PasscodeKit
 //
 //  Created by David Walter on 13.08.23.
 //

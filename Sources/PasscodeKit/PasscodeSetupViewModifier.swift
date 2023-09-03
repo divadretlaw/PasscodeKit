@@ -7,8 +7,6 @@
 
 import SwiftUI
 import PasscodeCore
-import PasscodeModel
-import PasscodeUI
 
 struct PasscodeSetupViewModifier: ViewModifier {
     @Environment(\.passcode.manager) private var passcodeManager
@@ -26,7 +24,6 @@ struct PasscodeSetupViewModifier: ViewModifier {
                         
                         let result = passcodeManager.setPasscode(code)
                         onCompletion?(result)
-                        
                     }
                 }
             }

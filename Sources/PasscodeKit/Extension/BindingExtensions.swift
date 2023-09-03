@@ -1,6 +1,6 @@
 //
 //  BindingExtensions.swift
-//  PasscodeUI
+//  PasscodeKit
 //
 //  Created by David Walter on 12.08.23.
 //

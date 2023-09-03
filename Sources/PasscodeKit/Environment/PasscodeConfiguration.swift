@@ -1,19 +1,17 @@
 //
-//  Environment.swift
+//  PasscodeConfiguration.swift
 //  PasscodeKit
 //
-//  Created by David Walter on 12.08.23.
+//  Created by David Walter on 02.09.23.
 //
 
 import SwiftUI
-import KeychainSwift
 import PasscodeCore
 
 public extension PasscodeEnvironmentValues {
-    /// The ``PasscodeManager`` to manage the passcode.
-    var manager: PasscodeManager {
-        get { self[PasscodeManagerKey.self] }
-        set { self[PasscodeManagerKey.self] = newValue }
+    var tintColor: Color? {
+        get { self[PasscodeTintColorKey.self] }
+        set { self[PasscodeTintColorKey.self] = newValue }
     }
     
     /// The background material to use when presenting the passcode view.
@@ -23,9 +21,9 @@ public extension PasscodeEnvironmentValues {
     }
 }
 
-struct PasscodeManagerKey: EnvironmentKey {
-    static var defaultValue: PasscodeManager {
-        PasscodeManager()
+private struct PasscodeTintColorKey: EnvironmentKey {
+    static var defaultValue: Color? {
+        .accentColor
     }
 }
 

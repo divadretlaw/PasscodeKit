@@ -1,12 +1,12 @@
 //
 //  PasscodeInputView.swift
-//  PasscodeUI
+//  PasscodeKit
 //
 //  Created by David Walter on 12.08.23.
 //
 
 import SwiftUI
-import PasscodeModel
+import PasscodeCore
 import LocalAuthentication
 
 public struct PasscodeInputView<Hint>: View where Hint: View {
@@ -120,6 +120,8 @@ extension PasscodeInputView where Hint == EmptyView {
 }
 
 struct InternalPasscodeInputView<Hint>: View where Hint: View {
+    @Environment(\.passcode.tintColor) private var tintColor
+    
     var type: PasscodeType
     var canCancel: Bool
     var check: (String) -> Bool
@@ -183,6 +185,7 @@ struct InternalPasscodeInputView<Hint>: View where Hint: View {
                 .padding(.vertical)
             }
         }
+        .tint(tintColor)
         .onChange(of: input) { text in
             switch type {
             case let .numeric(count):
@@ -242,6 +245,7 @@ struct PasscodeInputView_Previews: PreviewProvider {
                 
             }
         }
+        .environment(\.passcode.tintColor, .yellow)
         .previewDisplayName("Alphanumeric")
     }
 }

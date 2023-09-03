@@ -7,13 +7,13 @@ Easily add a passcode to your iOS app
 
 ## Usage
 
-PasscodeKit is split into several modules and depending on what you need you can use different or multiple modules.
+PasscodeKit is split into two modules and depending on what you need you can use the main or core module.
 
 ### PasscodeKit
 
 <img width="200" alt="Screenshot" src="https://github.com/divadretlaw/PasscodeKit/assets/6899256/f9328b38-7b17-42b0-ab4b-3e07dad4f1d6">
 
-The most complete, but also less customizable, module. Simply add `.passcode(title:hint:)`, with an optional title and hint view, to your root view.
+The default module, with UI and handling already setup. Simply add `.passcode(title:hint:)`, with an optional title and hint view, to your root view.
 
 ```swift
 @main
@@ -49,23 +49,19 @@ passcodeManager.delete()
 
 ### PasscodeCore
 
-The core module, that handles displaying the passcode window. By default it has no UI to enter a passcode or setting up and storing the passcode, but you can use this to implement your own passcode UI.
+The core module, that handles displaying the passcode window. By default it has no UI to enter a passcode or setting up and storing the passcode, but you can use this as a base to implement your own UI.
 
 ```swift
 .passcode(mode: PasscodeMode) { dismiss in
-    // some Passcode input UI
+    // some Passcode input UI, call `dismiss(animated:)` once finished
 } background: {
-    // some optional background
+    // some optional background view
 }
 ```
 
-### PasscodeUI
-
-The UI used in `PasscodeKit` without dependencies on `PasscodeCore` and `PasscodeKit`
-
 #### Localization
 
-Customize / Localize the `PasscodeUI` by providing a `Passcode.strings` file in your main app bundle. See the default [Passcode.strings](Sources/PasscodeUI/Resources/Passcode.strings) file for English Strings.
+Customize / Localize the `PasscodeKit` by providing a `Passcode.strings` file in your main app bundle. See the default [Passcode.strings](Sources/PasscodeKit/Resources/Passcode.strings) file for English Strings.
 
 ## Installation
 
@@ -77,16 +73,16 @@ Add the following package URL to Xcode
 https://github.com/divadretlaw/PasscodeKit
 ```
 
-Select the module(s) you need
+Select the module you need
 
-![Xcode](https://github.com/divadretlaw/PasscodeKit/assets/6899256/457e60c8-9146-4c57-bf2a-83f970b0e203)
+![Xcode](https://github.com/divadretlaw/PasscodeKit/assets/6899256/081ca701-deb1-4230-9e8e-25d9fe24e803)
 
 ### Swift Package Manager
 
 ```swift
 let package = Package(
     dependencies: [
-        .package(url: "https://github.com/divadretlaw/PasscodeKit.git", from: "0.3.0"),
+        .package(url: "https://github.com/divadretlaw/PasscodeKit.git", from: "0.7.0")
     ],
     targets: [
         .target(

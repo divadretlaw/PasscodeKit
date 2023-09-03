@@ -6,9 +6,7 @@
 //
 
 import SwiftUI
-import PasscodeCore
-import PasscodeModel
-import PasscodeUI
+@_exported import PasscodeCore
 import KeychainSwift
 
 public extension View {

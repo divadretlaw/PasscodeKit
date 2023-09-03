@@ -7,8 +7,6 @@
 
 import SwiftUI
 import PasscodeCore
-import PasscodeModel
-import PasscodeUI
 
 struct PasscodeViewModifier<Hint>: ViewModifier where Hint: View {
     @Environment(\.passcode.manager) private var passcodeManager

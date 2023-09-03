@@ -1,6 +1,6 @@
 //
 //  UIViewExtensions.swift
-//  PasscodeUI
+//  PasscodeKit
 //
 //  Created by David Walter on 14.08.23.
 //

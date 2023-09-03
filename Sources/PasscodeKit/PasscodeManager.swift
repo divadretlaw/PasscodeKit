@@ -5,9 +5,9 @@
 //  Created by David Walter on 01.09.23.
 //
 
-import Foundation
+import SwiftUI
+import PasscodeCore
 import KeychainSwift
-import PasscodeModel
 
 /// Manage the passcode of your app
 public final class PasscodeManager {
@@ -84,5 +84,19 @@ public final class PasscodeManager {
     /// - Returns: True if the passcode was successfully deleted.
     @discardableResult public func delete() -> Bool{
         keychain.delete(key)
+    }
+}
+
+public extension PasscodeEnvironmentValues {
+    /// The ``PasscodeManager`` to manage the passcode.
+    var manager: PasscodeManager {
+        get { self[PasscodeManagerKey.self] }
+        set { self[PasscodeManagerKey.self] = newValue }
+    }
+}
+
+struct PasscodeManagerKey: EnvironmentKey {
+    static var defaultValue: PasscodeManager {
+        PasscodeManager()
     }
 }

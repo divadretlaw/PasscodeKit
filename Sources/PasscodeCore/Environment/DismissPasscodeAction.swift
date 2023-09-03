@@ -28,7 +28,7 @@ public struct DismissPasscodeAction {
     ///
     ///         var body: some View {
     ///             Button("Dismiss Passcode") {
-    ///                 dismissPasscode() // Implicitly calls dismissPasscode.callAsFunction()
+    ///                 dismissPasscode(animated: true) // Implicitly calls dismissPasscode.callAsFunction(animated:)
     ///             }
     ///         }
     ///     }
@@ -55,7 +55,7 @@ extension View {
     ///
     /// - Parameters:
     ///     - action: A closure to run when passcode should dismiss. The closure
-    ///     takes a `animated` parameter that indicates wheter the dismiss should be animated
+    ///     takes a `animated` parameter that indicates whether the dismiss should be animated
     ///     or not.
     ///
     /// - Returns: A view that runs an action when the passcode should dismiss.

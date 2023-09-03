@@ -8,7 +8,6 @@
 import SwiftUI
 import PasscodeKit
 import KeychainSwift
-import PasscodeModel
 
 struct ContentView: View {
     @Environment(\.passcode.manager) private var passcodeManager

@@ -15,14 +15,6 @@ let package = Package(
         .library(
             name: "PasscodeCore",
             targets: ["PasscodeCore"]
-        ),
-        .library(
-            name: "PasscodeModel",
-            targets: ["PasscodeModel"]
-        ),
-        .library(
-            name: "PasscodeUI",
-            targets: ["PasscodeUI"]
         )
     ],
     dependencies: [
@@ -35,25 +27,14 @@ let package = Package(
             name: "PasscodeKit",
             dependencies: [
                 "PasscodeCore",
-                "PasscodeUI",
+                .product(name: "SwiftUIIntrospect", package: "swiftui-introspect"),
                 .product(name: "KeychainSwift", package: "keychain-swift")
-            ]
+            ],
+            resources: [.process("Resources")]
         ),
         .target(
             name: "PasscodeCore",
             dependencies: ["WindowSceneReader"]
-        ),
-        .target(
-            name: "PasscodeModel",
-            dependencies: []
-        ),
-        .target(
-            name: "PasscodeUI",
-            dependencies: [
-                "PasscodeModel",
-                .product(name: "SwiftUIIntrospect", package: "swiftui-introspect"),
-            ],
-            resources: [.process("Resources")]
         )
     ]
 )
