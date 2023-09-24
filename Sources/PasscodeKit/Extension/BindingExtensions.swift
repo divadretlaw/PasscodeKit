@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension Binding where Value == String {
-    func max(_ limit: Int) -> Self {
+    @MainActor func max(_ limit: Int) -> Self {
         if self.wrappedValue.count > limit {
             Task { @MainActor in
                 self.wrappedValue = String(self.wrappedValue.prefix(limit))

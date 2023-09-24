@@ -41,7 +41,9 @@ public extension View {
         @ViewBuilder input: @escaping (_ dismiss: DismissPasscodeAction) -> I,
         @ViewBuilder background: @escaping () -> B
     ) -> some View where I: View, B: View {
-        modifier(PasscodeViewModifierHelper(mode: mode, input: input, background: background))
+        modifier {
+            PasscodeViewModifierHelper(mode: mode, input: input, background: background)
+        }
     }
     
     // MARK: Privacy View
@@ -88,7 +90,9 @@ public extension View {
         @ViewBuilder input: @escaping (_ dismiss: DismissPasscodeAction) -> I,
         @ViewBuilder background: @escaping () -> B
     ) -> some View where I: View, B: View {
-        modifier(PasscodeViewModifier(windowScene: windowScene, mode: mode, input: input, background: background))
+        modifier {
+            PasscodeViewModifier(windowScene: windowScene, mode: mode, input: input, background: background)
+        }
     }
     
     // MARK: Privacy View
