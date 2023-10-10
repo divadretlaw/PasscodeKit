@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/siteline/swiftui-introspect",
       "state" : {
-        "revision" : "ccb973cfff703cba53fb88197413485c060eb26b",
-        "version" : "0.10.0"
+        "revision" : "3ced72fccb284235c266c1e8a32f1bf93129fc74",
+        "version" : "1.1.0"
       }
     },
     {
@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/divadretlaw/WindowReader",
       "state" : {
-        "revision" : "26fdb98bcc5f564a0d40bc6600aa718520e27925",
-        "version" : "1.0.2"
+        "revision" : "607785674f74a179ea8ce1c4a8aa6a255767f5c3",
+        "version" : "1.1.0"
       }
     },
     {
@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/divadretlaw/WindowSceneReader.git",
       "state" : {
-        "revision" : "3e39955e957b5e7011c94727ede4490cffa0ae28",
-        "version" : "2.0.0"
+        "revision" : "c4e3b7ceeb65dfed0fb05f739640cda45a67a5eb",
+        "version" : "2.1.0"
       }
     }
   ],
