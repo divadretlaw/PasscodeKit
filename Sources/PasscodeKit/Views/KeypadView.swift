@@ -9,13 +9,10 @@ import SwiftUI
 import LocalAuthentication
 
 struct KeypadView: View {
-    
-    @Environment(\.passcode) private var passcodeEnv
     @Environment(\.passcode.keypadViewConfiguration) private var configuration
     
     @Binding var text: String
-    
-    var onBiometry: () -> Void
+    var biometryAction: (() async -> Void)?
     
     var body: some View {
         VStack(alignment: .center, spacing: configuration.vSpacing) {
@@ -35,22 +32,23 @@ struct KeypadView: View {
                 NumberButton(value: .text("9"), text: $text)
             }
             HStack(spacing: configuration.hSpacing) {
-                if passcodeEnv.manager.passcode?.isBiometricsEnabled ?? false {
-                    Button {
-                        onBiometry()
-                    } label: {
+                if let biometricsImage = biometricsImage, let biometryAction = biometryAction {
+                    TaskButton {
+                        await biometryAction()
+                    } label: { _ in
                         ZStack {
                             Image(systemName: biometricsImage)
-                                .resizable()
+                                .font(.title)
                                 .foregroundColor(configuration.foregroundColor)
-                                .frame(maxWidth: 40, maxHeight: 40)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
                         .foregroundStyle(.primary)
+                        .background(.ultraThinMaterial.blendMode(.multiply))
                     }
                     .buttonStyle(.plain)
                     .frame(maxWidth: 100, maxHeight: 100)
+                    .clipShape(Circle())
                 } else {
-                    
                     NumberButton(value: .blank, text: $text)
                         .hidden()
                         .disabled(true)
@@ -61,14 +59,14 @@ struct KeypadView: View {
         }
     }
     
-    var biometricsImage: String {
+    var biometricsImage: String? {
         switch LAContext().biometryType {
         case .faceID:
             return "faceid"
         case .touchID:
             return "touchid"
         default:
-            return ""
+            return nil
         }
     }
 }
@@ -82,7 +80,7 @@ private struct NumberButton: View {
     var body: some View {
         Button {
             switch value {
-            case .text(let string):
+            case let .text(string):
                 text = text.appending(string)
             case .delete:
                 text = String(text.dropLast(1))
@@ -111,7 +109,7 @@ private struct NumberButton: View {
                 .font(.title)
         case .delete:
             configuration.deleteImage
-                .imageScale(.large)
+                .font(.title)
         default:
             EmptyView()
         }
@@ -126,6 +124,10 @@ enum PasscodeInputValue: Hashable {
 
 struct KeypadView_Previews: PreviewProvider {
     static var previews: some View {
-        KeypadView(text: .constant(""), onBiometry: {})
+        KeypadView(text: .constant(""))
+        
+        KeypadView(text: .constant("")) {
+            
+        }
     }
 }

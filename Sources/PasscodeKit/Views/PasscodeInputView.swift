@@ -54,15 +54,13 @@ public struct PasscodeInputView<Hint>: View where Hint: View {
             canCancel: canCancel,
             check: check,
             onCompletion: onCompletion,
-            onBiometry: {
-                Task {
-                    await initialBiometryCheck()
-                }
-            },
             hint: hint
         )
+        .biometryAction(allowBiometrics) {
+            await checkBiometry()
+        }
         .task {
-            await initialBiometryCheck()
+            await checkBiometry()
         }
         .navigationTitle("passcode.enter.title".localized())
         .navigationBarTitleDisplayMode(.inline)
@@ -80,7 +78,7 @@ public struct PasscodeInputView<Hint>: View where Hint: View {
     }
     
     @MainActor
-    private func initialBiometryCheck() async {
+    private func checkBiometry() async {
         guard allowBiometrics else { return }
         let context = LAContext()
         var error: NSError?
@@ -136,7 +134,8 @@ struct InternalPasscodeInputView<Hint>: View where Hint: View {
     var canCancel: Bool
     var check: (String) -> Bool
     var onCompletion: (Bool) -> Void
-    var onBiometry: (() -> Void)?
+    var biometryAction: (() async -> Void)?
+    
     @ViewBuilder var hint: () -> Hint
     
     @State private var input = ""
@@ -173,9 +172,7 @@ struct InternalPasscodeInputView<Hint>: View where Hint: View {
             if type.isNumeric {
                 Spacer()
                 
-                KeypadView(text: $input.max(type.maxInputLength), onBiometry: {
-                    onBiometry?()
-                })
+                KeypadView(text: $input.max(type.maxInputLength), biometryAction: biometryAction)
                     .foregroundStyle(.primary)
                     .disabled(isDisabled)
                     .padding(.horizontal, 40)
@@ -208,6 +205,16 @@ struct InternalPasscodeInputView<Hint>: View where Hint: View {
                 return
             }
         }
+    }
+    
+    func biometryAction(_ isEnabled: Bool, action: @escaping () async -> Void) -> Self {
+        var view = self
+        if isEnabled {
+            view.biometryAction = action
+        } else {
+            view.biometryAction = nil
+        }
+        return view
     }
     
     func finishInput(with text: String) {
