@@ -14,6 +14,7 @@ struct ContentView: View {
     
     @State private var setupPasscode = false
     @State private var passcodeType: PasscodeType = .numeric(4)
+    @State private var checkPasscodeOrBiometrics = false
     @State private var checkPasscode = false
     
     @State private var hasPasscode = false
@@ -46,9 +47,16 @@ struct ContentView: View {
                 .disabled(hasPasscode)
                 
                 Button {
+                    checkPasscodeOrBiometrics = true
+                } label: {
+                    Text("Check Passcode (Biometrics Enabled)")
+                }
+                .disabled(!hasPasscode)
+                
+                Button {
                     checkPasscode = true
                 } label: {
-                    Text("Check Passcode")
+                    Text("Check Passcode (Biometrics Disabled)")
                 }
                 .disabled(!hasPasscode)
                 
@@ -91,6 +99,9 @@ struct ContentView: View {
                 evaluatePasscode()
             }
             .checkPasscode(isPresented: $checkPasscode) { _ in
+                evaluatePasscode()
+            }
+            .checkPasscode(isPresented: $checkPasscodeOrBiometrics, allowBiometrics: true) { _ in
                 evaluatePasscode()
             }
         }
