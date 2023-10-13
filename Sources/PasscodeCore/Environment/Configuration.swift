@@ -25,7 +25,6 @@ private struct AnimatedDismissDurationKey: EnvironmentKey {
     static var defaultValue: TimeInterval { 0.3 }
 }
 
-
 private struct ColorSchemeKey: EnvironmentKey {
     static var defaultValue: ColorScheme? { nil }
 }

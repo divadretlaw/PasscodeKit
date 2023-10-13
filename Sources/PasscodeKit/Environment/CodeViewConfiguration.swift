@@ -5,8 +5,8 @@
 //  Created by David Walter on 02.09.23.
 //
 
-import SwiftUI
 import PasscodeCore
+import SwiftUI
 
 /// Customize the code view
 public struct CodeViewConfiguration {
@@ -65,7 +65,7 @@ public struct CodeViewConfiguration {
     /// - Returns: The configuration with the spacing configured.
     func spacing(_ value: CGFloat) -> Self {
         var configuration = self
-        configuration.spacing = spacing
+        configuration.spacing = value
         return configuration
     }
 }

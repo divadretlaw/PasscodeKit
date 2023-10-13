@@ -1,5 +1,5 @@
 //
-//  PasscodeDismissAction.swift
+//  DismissPasscodeAction.swift
 //  PasscodeCore
 //
 //  Created by David Walter on 12.08.23.
