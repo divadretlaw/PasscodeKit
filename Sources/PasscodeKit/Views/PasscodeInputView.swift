@@ -54,23 +54,15 @@ public struct PasscodeInputView<Hint>: View where Hint: View {
             canCancel: canCancel,
             check: check,
             onCompletion: onCompletion,
+            onBiometry: {
+                Task {
+                    await initialBiometryCheck()
+                }
+            },
             hint: hint
         )
         .task {
-            guard allowBiometrics else { return }
-            let context = LAContext()
-            var error: NSError?
-            
-            guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else { return }
-            let reason = "passcode.biometrics.reason".localized()
-            
-            do {
-                let success = try await context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason)
-                guard success else { return }
-                onCompletion(true)
-            } catch {
-                print(error.localizedDescription)
-            }
+            await initialBiometryCheck()
         }
         .navigationTitle("passcode.enter.title".localized())
         .navigationBarTitleDisplayMode(.inline)
@@ -84,6 +76,24 @@ public struct PasscodeInputView<Hint>: View where Hint: View {
                     }
                 }
             }
+        }
+    }
+    
+    @MainActor
+    private func initialBiometryCheck() async {
+        guard allowBiometrics else { return }
+        let context = LAContext()
+        var error: NSError?
+        
+        guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else { return }
+        let reason = "passcode.biometrics.reason".localized()
+        
+        do {
+            let success = try await context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason)
+            guard success else { return }
+            onCompletion(true)
+        } catch {
+            print(error.localizedDescription)
         }
     }
 }
@@ -126,6 +136,7 @@ struct InternalPasscodeInputView<Hint>: View where Hint: View {
     var canCancel: Bool
     var check: (String) -> Bool
     var onCompletion: (Bool) -> Void
+    var onBiometry: (() -> Void)?
     @ViewBuilder var hint: () -> Hint
     
     @State private var input = ""
@@ -162,7 +173,9 @@ struct InternalPasscodeInputView<Hint>: View where Hint: View {
             if type.isNumeric {
                 Spacer()
                 
-                KeypadView(text: $input.max(type.maxInputLength))
+                KeypadView(text: $input.max(type.maxInputLength), onBiometry: {
+                    onBiometry?()
+                })
                     .foregroundStyle(.primary)
                     .disabled(isDisabled)
                     .padding(.horizontal, 40)

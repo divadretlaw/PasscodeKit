@@ -6,11 +6,16 @@
 //
 
 import SwiftUI
+import LocalAuthentication
 
 struct KeypadView: View {
+    
+    @Environment(\.passcode) private var passcodeEnv
     @Environment(\.passcode.keypadViewConfiguration) private var configuration
     
     @Binding var text: String
+    
+    var onBiometry: () -> Void
     
     var body: some View {
         VStack(alignment: .center, spacing: configuration.vSpacing) {
@@ -30,12 +35,40 @@ struct KeypadView: View {
                 NumberButton(value: .text("9"), text: $text)
             }
             HStack(spacing: configuration.hSpacing) {
-                NumberButton(value: .blank, text: $text)
-                    .hidden()
-                    .disabled(true)
+                if passcodeEnv.manager.passcode?.isBiometricsEnabled ?? false {
+                    Button {
+                        onBiometry()
+                    } label: {
+                        ZStack {
+                            Image(systemName: biometricsImage)
+                                .resizable()
+                                .foregroundColor(configuration.foregroundColor)
+                                .frame(maxWidth: 40, maxHeight: 40)
+                        }
+                        .foregroundStyle(.primary)
+                    }
+                    .buttonStyle(.plain)
+                    .frame(maxWidth: 100, maxHeight: 100)
+                } else {
+                    
+                    NumberButton(value: .blank, text: $text)
+                        .hidden()
+                        .disabled(true)
+                }
                 NumberButton(value: .text("0"), text: $text)
                 NumberButton(value: .delete, text: $text)
             }
+        }
+    }
+    
+    var biometricsImage: String {
+        switch LAContext().biometryType {
+        case .faceID:
+            return "faceid"
+        case .touchID:
+            return "touchid"
+        default:
+            return ""
         }
     }
 }
@@ -93,6 +126,6 @@ enum PasscodeInputValue: Hashable {
 
 struct KeypadView_Previews: PreviewProvider {
     static var previews: some View {
-        KeypadView(text: .constant(""))
+        KeypadView(text: .constant(""), onBiometry: {})
     }
 }
