@@ -61,7 +61,10 @@ import WindowSceneReader
                 switch mode {
                 case .alwaysVisible:
                     isShowingPasscode = true
-                case .hideInAppSwitcher, .autohide, .disabled:
+                case .hideInAppSwitcher:
+                    guard window == nil else { return }
+                    isShowingPasscode = false
+                case .autohide, .disabled:
                     isShowingPasscode = false
                 }
             }
