@@ -103,7 +103,7 @@ public extension View {
     ///   - onCompletion: The closure to execute when the passcode was checked.
     func checkPasscode(
         isPresented: Binding<Bool>,
-        allowBiometrics: Bool = false,
+        allowBiometrics: Bool = true,
         onCompletion: @escaping (Bool) -> Void
     ) -> some View {
         modifier(PasscodeCheckViewModifier(isPresented: isPresented, allowBiometrics: allowBiometrics, onCompletion: onCompletion))
