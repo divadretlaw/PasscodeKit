@@ -47,11 +47,11 @@ public struct PasscodeSetupView: View {
             case .initial:
                 inputView
                     .zIndex(0)
-                    .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
+                    //.transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
             case .reEnter:
                 reEnterInputView
                     .zIndex(1)
-                    .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .trailing)))
+                    //.transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .trailing)))
             }
         }
         .confirmationDialog(localizedBiometrics ?? "", isPresented: $showBiometrics, titleVisibility: localizedBiometrics != nil ? .visible : .hidden) {
