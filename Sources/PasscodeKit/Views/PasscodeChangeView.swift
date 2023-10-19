@@ -1,19 +1,21 @@
 //
-//  PasscodeSetupView.swift
+//  PasscodeChangeView.swift
 //  PasscodeKit
 //
-//  Created by David Walter on 12.08.23.
+//  Created by David Walter on 19.10.23.
 //
 
 import SwiftUI
 import PasscodeCore
 import LocalAuthentication
 
-public struct PasscodeSetupView: View {
+public struct PasscodeChangeView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.passcode.manager) private var passcodeManager
     
     enum Step: String, Identifiable {
-        case initial
+        case current
+        case new
         case reEnter
         
         var id: String { rawValue }
@@ -24,7 +26,7 @@ public struct PasscodeSetupView: View {
     var onCompletion: (Passcode) -> Void
     
     @State private var code = ""
-    @State private var currentStep: Step = .initial
+    @State private var currentStep: Step = .current
     @State private var showBiometrics = false
     
     @State private var numberOfAttempts = 0
@@ -44,10 +46,30 @@ public struct PasscodeSetupView: View {
     public var body: some View {
         ZStack {
             switch currentStep {
-            case .initial:
+            case .current:
+                if let passcode = passcodeManager.passcode {
+                    currentView(passcode: passcode)
+                        .zIndex(0)
+                        .transition(
+                            .asymmetric(
+                                insertion: .opacity,
+                                removal: .move(edge: .leading)
+                            )
+                        )
+                } else {
+                    inputView
+                        .zIndex(0)
+                        .transition(.move(edge: .leading))
+                }
+            case .new:
                 inputView
                     .zIndex(0)
-                    .transition(.move(edge: .leading))
+                    .transition(
+                        .asymmetric(
+                            insertion: numberOfAttempts == 0 ? .move(edge: .trailing) : .move(edge: .leading),
+                            removal: .move(edge: .leading)
+                        )
+                    )
             case .reEnter:
                 reEnterInputView
                     .zIndex(1)
@@ -85,7 +107,7 @@ public struct PasscodeSetupView: View {
             }
         }
         .animation(.default, value: currentStep)
-        .navigationTitle("passcode.create.title".localized())
+        .navigationTitle(navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
@@ -95,6 +117,29 @@ public struct PasscodeSetupView: View {
                     Text("cancel".localized())
                 }
             }
+        }
+    }
+    
+    var navigationTitle: String {
+        if passcodeManager.isSetup {
+            return "passcode.change.title".localized()
+        } else {
+            return "passcode.create.title".localized()
+        }
+    }
+    
+    func currentView(passcode: Passcode) -> some View {
+        InternalPasscodeInputView(type: passcode.type, canCancel: false) { code in
+            if code == passcode.code {
+                return true
+            } else {
+                return fail(next: .current)
+            }
+        } onCompletion: { success in
+            guard success else { return }
+            currentStep = .new
+        } hint: {
+            Text("passcode.enter.current.hint".localized())
         }
     }
     
@@ -118,7 +163,7 @@ public struct PasscodeSetupView: View {
             if self.code == code {
                 return true
             } else {
-                return fail()
+                return fail(next: .new)
             }
         } onCompletion: { success in
             if allowBiometrics, canUseBiometrics {
@@ -151,19 +196,21 @@ public struct PasscodeSetupView: View {
         }
     }
     
-    func fail() -> Bool {
+    func fail(next: Step) -> Bool {
         withAnimation(.default) {
-            currentStep = .initial
-            numberOfAttempts += 1
+            if currentStep == .reEnter {
+                numberOfAttempts += 1
+            }
+            currentStep = next
             
             self.task = Task { @MainActor in
                 do {
                     try await Task.sleep(nanoseconds: NSEC_PER_SEC)
                     withAnimation(.default) {
-                        reset()
+                        reset(to: next)
                     }
                 } catch {
-                    reset()
+                    reset(to: next)
                 }
             }
         }
@@ -171,16 +218,16 @@ public struct PasscodeSetupView: View {
         return false
     }
     
-    func reset() {
+    func reset(to step: Step) {
         code = ""
-        currentStep = .initial
+        currentStep = step
     }
 }
 
-struct PasscodeSetupView_Previews: PreviewProvider {
+struct PasscodeChangeView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            PasscodeSetupView(type: .numeric(4)) { code in
+            PasscodeChangeView(type: .numeric(4)) { code in
                 print(code)
             }
         }

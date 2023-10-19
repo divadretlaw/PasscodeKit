@@ -121,4 +121,17 @@ public extension View {
     ) -> some View {
         modifier(PasscodeSetupViewModifier(isPresented: isPresented, type: type, onCompletion: onCompletion))
     }
+    
+    /// Change the currently setup passcode
+    ///
+    /// - Parameters:
+    ///   - isPresented: A binding to a Boolean value that determines whether to present the passcode view.
+    ///    - type: The ``PasscodeType`` to setup.
+    func changePasscode(
+        isPresented: Binding<Bool>,
+        type: PasscodeType = .numeric(4),
+        onCompletion: ((Bool) -> Void)? = nil
+    ) -> some View {
+        modifier(PasscodeChangeViewModifier(isPresented: isPresented, type: type, onCompletion: onCompletion))
+    }
 }

@@ -1,6 +1,8 @@
 "passcode.enter.title" = "Enter Passcode";
 "passcode.create.title" = "Create Passcode";
+"passcode.change.title" = "Change Passcode";
 
+"passcode.enter.current.hint" = "Enter current passcode";
 "passcode.enter.hint" = "Enter a new passcode";
 "passcode.enter.again.hint" = "Please re-enter your passcode";
 "passcode.enter.failed.hint" = "Passcodes did not match. Try again";

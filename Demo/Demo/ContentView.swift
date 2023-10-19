@@ -13,6 +13,7 @@ struct ContentView: View {
     @Environment(\.passcode.manager) private var passcodeManager
     
     @State private var setupPasscode = false
+    @State private var changePasscode = false
     @State private var passcodeType: PasscodeType = .numeric(4)
     @State private var checkPasscodeOrBiometrics = false
     @State private var checkPasscode = false
@@ -45,6 +46,17 @@ struct ContentView: View {
                     Text("Setup")
                 }
                 .disabled(hasPasscode)
+                
+                Section {
+                    Button {
+                        changePasscode = true
+                    } label: {
+                        Text("Change Passcode")
+                    }
+                } header: {
+                    Text("Change")
+                }
+                .disabled(!hasPasscode)
                 
                 Button {
                     checkPasscodeOrBiometrics = true
@@ -96,6 +108,9 @@ struct ContentView: View {
                 evaluatePasscode()
             }
             .setupPasscode(isPresented: $setupPasscode, type: passcodeType) { _ in
+                evaluatePasscode()
+            }
+            .changePasscode(isPresented: $changePasscode, type: passcodeType) { _ in
                 evaluatePasscode()
             }
             .checkPasscode(isPresented: $checkPasscode) { _ in
