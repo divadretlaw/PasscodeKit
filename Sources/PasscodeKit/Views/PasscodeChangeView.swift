@@ -12,6 +12,8 @@ import LocalAuthentication
 public struct PasscodeChangeView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.passcode.manager) private var passcodeManager
+    @Environment(\.passcode.setupForwardTransition) private var forwardTransition
+    @Environment(\.passcode.setupBackwardTransition) private var backwardTransition
     
     enum Step: String, Identifiable {
         case current
@@ -66,27 +68,27 @@ public struct PasscodeChangeView: View {
                         .transition(
                             .asymmetric(
                                 insertion: .opacity,
-                                removal: .move(edge: .leading)
+                                removal: forwardTransition
                             )
                         )
                 } else {
                     inputView
                         .zIndex(0)
-                        .transition(.move(edge: .leading))
+                        .transition(forwardTransition)
                 }
             case .new:
                 inputView
                     .zIndex(0)
                     .transition(
                         .asymmetric(
-                            insertion: numberOfAttempts == 0 ? .move(edge: .trailing) : .move(edge: .leading),
-                            removal: .move(edge: .leading)
+                            insertion: numberOfAttempts == 0 ? backwardTransition : forwardTransition,
+                            removal: forwardTransition
                         )
                     )
             case .reEnter:
                 reEnterInputView
                     .zIndex(1)
-                    .transition(.move(edge: .trailing))
+                    .transition(backwardTransition)
             }
         }
         .confirmationDialog(localizedBiometrics ?? "", isPresented: $showBiometrics, titleVisibility: localizedBiometrics != nil ? .visible : .hidden) {
