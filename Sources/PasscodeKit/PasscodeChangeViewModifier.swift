@@ -12,14 +12,26 @@ struct PasscodeChangeViewModifier: ViewModifier {
     @Environment(\.passcode.manager) private var passcodeManager
     
     @Binding var isPresented: Bool
-    var type: PasscodeType
+    var types: [PasscodeType]
     var onCompletion: ((Bool) -> Void)?
+    
+    init(isPresented: Binding<Bool>, type: PasscodeType, onCompletion: ((Bool) -> Void)? = nil) {
+        self._isPresented = isPresented
+        self.types = [type]
+        self.onCompletion = onCompletion
+    }
+    
+    init(isPresented: Binding<Bool>, types: [PasscodeType], onCompletion: ((Bool) -> Void)? = nil) {
+        self._isPresented = isPresented
+        self.types = types
+        self.onCompletion = onCompletion
+    }
     
     func body(content: Content) -> some View {
         content
             .fullScreenCover(isPresented: $isPresented) {
                 NavigationView {
-                    PasscodeChangeView(type: type) { code in
+                    PasscodeChangeView(types: types) { code in
                         defer { self.isPresented = false }
                         
                         let result = passcodeManager.setPasscode(code)

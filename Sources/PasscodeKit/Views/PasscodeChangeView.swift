@@ -21,10 +21,11 @@ public struct PasscodeChangeView: View {
         var id: String { rawValue }
     }
     
-    var type: PasscodeType
+    var types: [PasscodeType]
     var allowBiometrics: Bool
     var onCompletion: (Passcode) -> Void
     
+    @State private var type: PasscodeType
     @State private var code = ""
     @State private var currentStep: Step = .current
     @State private var showBiometrics = false
@@ -38,7 +39,19 @@ public struct PasscodeChangeView: View {
         allowBiometrics: Bool = true,
         onCompletion: @escaping (Passcode) -> Void
     ) {
-        self.type = type
+        self.types = [type]
+        self._type = State(initialValue: type)
+        self.allowBiometrics = allowBiometrics
+        self.onCompletion = onCompletion
+    }
+    
+    public init(
+        types: [PasscodeType],
+        allowBiometrics: Bool = true,
+        onCompletion: @escaping (Passcode) -> Void
+    ) {
+        self.types = types
+        self._type = State(initialValue: types.first!)
         self.allowBiometrics = allowBiometrics
         self.onCompletion = onCompletion
     }

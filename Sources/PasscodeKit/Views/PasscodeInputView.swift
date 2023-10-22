@@ -127,7 +127,7 @@ extension PasscodeInputView where Hint == EmptyView {
     }
 }
 
-struct InternalPasscodeInputView<Hint>: View where Hint: View {
+struct InternalPasscodeInputView<Hint, Options>: View where Hint: View, Options: View {
     @Environment(\.passcode.tintColor) private var tintColor
     
     var type: PasscodeType
@@ -136,7 +136,8 @@ struct InternalPasscodeInputView<Hint>: View where Hint: View {
     var onCompletion: (Bool) -> Void
     var biometryAction: (() async -> Void)?
     
-    @ViewBuilder var hint: () -> Hint
+   var hint: Hint
+   var options: Options
     
     @State private var input = ""
     @State private var passcode = ""
@@ -145,12 +146,30 @@ struct InternalPasscodeInputView<Hint>: View where Hint: View {
     
     @FocusState private var alphaNumericInput
     
+    init(
+        type: PasscodeType,
+        canCancel: Bool,
+        check: @escaping (String) -> Bool,
+        onCompletion: @escaping (Bool) -> Void,
+        biometryAction: (() async -> Void)? = nil,
+        @ViewBuilder hint: () -> Hint,
+        @ViewBuilder options: () -> Options
+    ) {
+        self.type = type
+        self.canCancel = canCancel
+        self.check = check
+        self.onCompletion = onCompletion
+        self.biometryAction = biometryAction
+        self.hint = hint()
+        self.options = options()
+    }
+    
     public var body: some View {
         PasscodeScrollView {
             Spacer()
             
             VStack(spacing: 20) {
-                hint()
+                hint
                 
                 CodeView(text: input, type: type)
                     .padding(.horizontal, 40)
@@ -167,6 +186,8 @@ struct InternalPasscodeInputView<Hint>: View where Hint: View {
                                 .opacity(0)
                         }
                     }
+                
+                options
             }
             
             if type.isNumeric {
@@ -235,6 +256,25 @@ struct InternalPasscodeInputView<Hint>: View where Hint: View {
                 }
             }
         }
+    }
+}
+
+extension InternalPasscodeInputView where Options == EmptyView {
+    init(
+        type: PasscodeType,
+        canCancel: Bool,
+        check: @escaping (String) -> Bool,
+        onCompletion: @escaping (Bool) -> Void,
+        biometryAction: (() async -> Void)? = nil,
+        @ViewBuilder hint: () -> Hint
+    ) {
+        self.type = type
+        self.canCancel = canCancel
+        self.check = check
+        self.onCompletion = onCompletion
+        self.biometryAction = biometryAction
+        self.hint = hint()
+        self.options = EmptyView()
     }
 }
 

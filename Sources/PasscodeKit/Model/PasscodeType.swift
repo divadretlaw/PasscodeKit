@@ -60,6 +60,17 @@ public enum PasscodeType: Hashable, Equatable, Codable, Identifiable, Sendable {
         }
     }
     
+    public var localized: String {
+        switch self {
+        case let .numeric(count):
+            return String(format: "passcode.type.numeric".localized(), count.description)
+        case .customNumeric:
+            return "passcode.type.numeric.custom".localized()
+        case .alphanumeric:
+            return "passcode.type.alphanumeric.custom".localized()
+        }
+    }
+    
     // MARK: - Identifiable
     
     public var id: String {
@@ -69,7 +80,7 @@ public enum PasscodeType: Hashable, Equatable, Codable, Identifiable, Sendable {
         case .customNumeric:
             return "numeric.custom"
         case .alphanumeric:
-            return "alphaNumeric.custom"
+            return "alphanumeric.custom"
         }
     }
 }

@@ -14,3 +14,8 @@
 
 "ok" = "OK";
 "cancel" = "Cancel";
+
+"passcode.type.options" = "Passcode Options";
+"passcode.type.numeric" = "%@-Digit Numeric Code";
+"passcode.type.numeric.custom" = "Custom Numeric Code";
+"passcode.type.alphanumeric.custom" = "Custom Alphanumeric Code";

@@ -19,10 +19,11 @@ public struct PasscodeSetupView: View {
         var id: String { rawValue }
     }
     
-    var type: PasscodeType
+    var types: [PasscodeType]
     var allowBiometrics: Bool
     var onCompletion: (Passcode) -> Void
     
+    @State private var type: PasscodeType
     @State private var code = ""
     @State private var currentStep: Step = .initial
     @State private var showBiometrics = false
@@ -36,7 +37,19 @@ public struct PasscodeSetupView: View {
         allowBiometrics: Bool = true,
         onCompletion: @escaping (Passcode) -> Void
     ) {
-        self.type = type
+        self.types = [type]
+        self._type = State(initialValue: type)
+        self.allowBiometrics = allowBiometrics
+        self.onCompletion = onCompletion
+    }
+    
+    public init(
+        types: [PasscodeType],
+        allowBiometrics: Bool = true,
+        onCompletion: @escaping (Passcode) -> Void
+    ) {
+        self.types = types
+        self._type = State(initialValue: types.first!)
         self.allowBiometrics = allowBiometrics
         self.onCompletion = onCompletion
     }
@@ -110,7 +123,23 @@ public struct PasscodeSetupView: View {
             } else {
                 Text("passcode.enter.hint".localized())
             }
+        } options: {
+            if types.count > 1 {
+                Menu {
+                    Picker(selection: $type) {
+                        ForEach(types) { type in
+                            Text(type.localized)
+                                .tag(type)
+                        }
+                    } label: {
+                        Text("passcode.type.options".localized())
+                    }
+                } label: {
+                    Text("passcode.type.options".localized())
+                }
+            }
         }
+        .animation(.default, value: type)
     }
     
     var reEnterInputView: some View {

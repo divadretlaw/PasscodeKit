@@ -14,7 +14,6 @@ struct ContentView: View {
     
     @State private var setupPasscode = false
     @State private var changePasscode = false
-    @State private var passcodeType: PasscodeType = .numeric(4)
     @State private var checkPasscodeOrBiometrics = false
     @State private var checkPasscode = false
     
@@ -28,19 +27,6 @@ struct ContentView: View {
                         setupPasscode = true
                     } label: {
                         Text("Setup Passcode")
-                    }
-                    
-                    Picker(selection: $passcodeType) {
-                        Text("Numeric (4 digits)")
-                            .tag(PasscodeType.numeric(4))
-                        Text("Numeric (6 digits)")
-                            .tag(PasscodeType.numeric(6))
-                        Text("Numeric (custom)")
-                            .tag(PasscodeType.customNumeric)
-                        Text("Alphanumeric (custom)")
-                            .tag(PasscodeType.alphanumeric)
-                    } label: {
-                        Text("Type")
                     }
                 } header: {
                     Text("Setup")
@@ -107,10 +93,10 @@ struct ContentView: View {
             .onAppear {
                 evaluatePasscode()
             }
-            .setupPasscode(isPresented: $setupPasscode, type: passcodeType) { _ in
+            .setupPasscode(isPresented: $setupPasscode, types: passcodes) { _ in
                 evaluatePasscode()
             }
-            .changePasscode(isPresented: $changePasscode, type: passcodeType) { _ in
+            .changePasscode(isPresented: $changePasscode, types: passcodes) { _ in
                 evaluatePasscode()
             }
             .checkPasscode(isPresented: $checkPasscode) { _ in
@@ -120,6 +106,10 @@ struct ContentView: View {
                 evaluatePasscode()
             }
         }
+    }
+    
+    var passcodes: [PasscodeType] {
+        [.numeric(4), .numeric(6), .alphanumeric]
     }
     
     func evaluatePasscode() {
