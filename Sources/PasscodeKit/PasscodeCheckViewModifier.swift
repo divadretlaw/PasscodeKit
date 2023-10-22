@@ -15,40 +15,33 @@ struct PasscodeCheckViewModifier: ViewModifier {
     @Binding var isPresented: Bool
     var allowBiometrics: Bool
     var onCompletion: (Bool) -> Void
+    @State private var item: Passcode?
     
     func body(content: Content) -> some View {
-        if let passcode = passcodeManager.passcode {
-            content
-                .fullScreenCover(isPresented: $isPresented) {
-                    NavigationView {
-                        ZStack {
-                            if let material = backgroundMaterial {
-                                Color.clear
-                                    .background(material, ignoresSafeAreaEdges: .all)
-                            }
-                            
-                            PasscodeInputView(passcode: passcode, allowBiometrics: allowBiometrics, canCancel: true) { success in
-                                onCompletion(success)
-                                isPresented = false
-                            }
-                            .transparentBackground(hasBackground)
+        content
+            .fullScreenCover(item: $item) { passcode in
+                NavigationView {
+                    ZStack {
+                        if let material = backgroundMaterial {
+                            Color.clear
+                                .background(material, ignoresSafeAreaEdges: .all)
                         }
+                        
+                        PasscodeInputView(passcode: passcode, allowBiometrics: allowBiometrics, canCancel: true) { success in
+                            onCompletion(success)
+                            isPresented = false
+                        }
+                        .transparentBackground(hasBackground)
                     }
-                    .transparentBackground(hasBackground)
                 }
-        } else {
-            content
-                .onAppear {
-                    defer { self.isPresented = false }
-                    guard isPresented else { return }
-                    onCompletion(true)
-                }
-                .onChange(of: isPresented) { isPresented in
-                    defer { self.isPresented = false }
-                    guard isPresented else { return }
-                    onCompletion(true)
-                }
-        }
+                .transparentBackground(hasBackground)
+            }
+            .onAppear {
+                item = isPresented ? passcodeManager.passcode : nil
+            }
+            .onChange(of: isPresented) { isPresented in
+                item = isPresented ? passcodeManager.passcode : nil
+            }
     }
     
     var hasBackground: Bool {

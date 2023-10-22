@@ -9,7 +9,7 @@ import Foundation
 import LocalAuthentication
 
 /// A type that represents a passcode
-public struct Passcode: Equatable, Hashable, Codable {
+public struct Passcode: Equatable, Hashable, Codable, Identifiable {
     /// The code of the passcode
     public var code: String
     /// The type of the passcode
@@ -64,5 +64,11 @@ public struct Passcode: Equatable, Hashable, Codable {
         let context = LAContext()
         var error: NSError?
         return context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
+    }
+    
+    // MARK: - Identifiable
+    
+    public var id: String {
+        "\(type.id):\(code.hashValue)"
     }
 }
