@@ -7,7 +7,7 @@
 
 import SwiftUI
 import PasscodeCore
-import LocalAuthentication
+@preconcurrency import LocalAuthentication
 
 public struct PasscodeChangeView: View {
     @Environment(\.dismiss) private var dismiss
@@ -218,15 +218,8 @@ public struct PasscodeChangeView: View {
             }
             currentStep = next
             
-            self.task = Task { @MainActor in
-                do {
-                    try await Task.sleep(nanoseconds: NSEC_PER_SEC)
-                    withAnimation(.default) {
-                        reset(to: next)
-                    }
-                } catch {
-                    reset(to: next)
-                }
+            withAnimation(.default.delay(1)) {
+                reset(to: next)
             }
         }
         

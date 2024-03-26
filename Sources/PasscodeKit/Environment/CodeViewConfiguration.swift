@@ -9,7 +9,7 @@ import PasscodeCore
 import SwiftUI
 
 /// Customize the code view
-public struct CodeViewConfiguration {
+public struct CodeViewConfiguration: Sendable {
     var foregroundColor: Color = .primary
     var emptyImage = Image(systemName: "circle")
     var filledImage = Image(systemName: "circle.fill")

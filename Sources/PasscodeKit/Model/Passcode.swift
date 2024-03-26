@@ -9,7 +9,7 @@ import Foundation
 import LocalAuthentication
 
 /// A type that represents a passcode
-public struct Passcode: Equatable, Hashable, Codable, Identifiable {
+public struct Passcode: Equatable, Hashable, Codable, Identifiable, Sendable {
     /// The code of the passcode
     public var code: String
     /// The type of the passcode

@@ -9,7 +9,7 @@ import SwiftUI
 import PasscodeCore
 
 /// Customize the keypad view
-public struct KeypadViewConfiguration {
+public struct KeypadViewConfiguration: Sendable {
     var foregroundColor: Color = .primary
     var hSpacing: CGFloat = 40
     var vSpacing: CGFloat = 20

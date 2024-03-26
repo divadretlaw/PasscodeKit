@@ -7,7 +7,7 @@
 
 import SwiftUI
 import PasscodeCore
-import LocalAuthentication
+@preconcurrency import LocalAuthentication
 
 public struct PasscodeInputView<Hint>: View where Hint: View {
     var type: PasscodeType
@@ -247,12 +247,9 @@ struct InternalPasscodeInputView<Hint, Options>: View where Hint: View, Options:
             withAnimation(.default) {
                 attempts += 1
                 
-                Task { @MainActor in
-                    try? await Task.sleep(nanoseconds: NSEC_PER_SEC)
-                    withAnimation(.default) {
-                        input = ""
-                        isDisabled = false
-                    }
+                withAnimation(.default.delay(1)) {
+                    input = ""
+                    isDisabled = false
                 }
             }
         }

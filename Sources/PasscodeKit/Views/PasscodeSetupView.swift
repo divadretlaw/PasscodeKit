@@ -7,7 +7,7 @@
 
 import SwiftUI
 import PasscodeCore
-import LocalAuthentication
+@preconcurrency import LocalAuthentication
 
 public struct PasscodeSetupView: View {
     @Environment(\.dismiss) private var dismiss
@@ -184,18 +184,11 @@ public struct PasscodeSetupView: View {
     
     func fail() -> Bool {
         withAnimation(.default) {
-            currentStep = .initial
             numberOfAttempts += 1
+            currentStep = .initial
             
-            self.task = Task { @MainActor in
-                do {
-                    try await Task.sleep(nanoseconds: NSEC_PER_SEC)
-                    withAnimation(.default) {
-                        reset()
-                    }
-                } catch {
-                    reset()
-                }
+            withAnimation(.default.delay(1)) {
+                reset()
             }
         }
         

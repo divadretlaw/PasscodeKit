@@ -16,7 +16,7 @@ public extension View {
     ///   - input: The passcode input view. Call the given `dismiss` action when the passcode was validated.
     ///
     /// - Returns: A view with a passcode enabled.
-    func passcode<I>(
+    @MainActor func passcode<I>(
         mode: PasscodeMode = .default,
         background material: Material? = .regular,
         @ViewBuilder input: @escaping (_ dismiss: DismissPasscodeAction) -> I
@@ -36,7 +36,7 @@ public extension View {
     ///   - input: The passcode input view. Call the given `dismiss` action when the passcode was validated.
     ///   - background: The background view of the passcode view.
     /// - Returns: A view with a passcode enabled.
-    func passcode<I, B>(
+    @MainActor func passcode<I, B>(
         mode: PasscodeMode = .default,
         @ViewBuilder input: @escaping (_ dismiss: DismissPasscodeAction) -> I,
         @ViewBuilder background: @escaping () -> B
@@ -48,13 +48,15 @@ public extension View {
     
     // MARK: Privacy View
     
-    func privacyView(background material: Material? = .regular) -> some View {
+    @MainActor func privacyView(
+        background material: Material? = .regular
+    ) -> some View {
         passcode(mode: .hideInAppSwitcher, background: material) { _ in
             EmptyView()
         }
     }
     
-    func privacyView<B>(
+    @MainActor func privacyView<B>(
         @ViewBuilder background: @escaping () -> B
     ) -> some View where B: View {
         passcode(mode: .hideInAppSwitcher) { _ in
@@ -68,8 +70,7 @@ public extension View {
 // MARK: - UIWindowScene
 
 public extension View {
-    @MainActor
-    func passcode<I>(
+    @MainActor func passcode<I>(
         on windowScene: UIWindowScene,
         mode: PasscodeMode = .default,
         background material: Material? = .regular,
@@ -83,8 +84,7 @@ public extension View {
         }
     }
     
-    @MainActor
-    func passcode<I, B>(
+    @MainActor func passcode<I, B>(
         on windowScene: UIWindowScene,
         mode: PasscodeMode = .default,
         @ViewBuilder input: @escaping (_ dismiss: DismissPasscodeAction) -> I,
@@ -97,15 +97,16 @@ public extension View {
     
     // MARK: Privacy View
     
-    @MainActor
-    func privacyView(on windowScene: UIWindowScene, background material: Material? = .regular) -> some View {
+    @MainActor func privacyView(
+        on windowScene: UIWindowScene,
+        background material: Material? = .regular
+    ) -> some View {
         passcode(on: windowScene, mode: .hideInAppSwitcher, background: material) { _ in
             EmptyView()
         }
     }
     
-    @MainActor
-    func privacyView<B>(
+    @MainActor func privacyView<B>(
         on windowScene: UIWindowScene,
         @ViewBuilder background: @escaping () -> B
     ) -> some View where B: View {
