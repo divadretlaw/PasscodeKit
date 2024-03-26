@@ -139,7 +139,7 @@ public extension View {
     ///
     /// - Parameters:
     ///   - isPresented: A binding to a Boolean value that determines whether to present the passcode view.
-    ///    - type: The ``PasscodeType`` to setup.
+    ///   - type: The ``PasscodeType`` to setup.
     func changePasscode(
         isPresented: Binding<Bool>,
         type: PasscodeType = .numeric(4),
@@ -152,7 +152,7 @@ public extension View {
     ///
     /// - Parameters:
     ///   - isPresented: A binding to a Boolean value that determines whether to present the passcode view.
-    ///    - types: The allowed ``PasscodeType``s to setup.
+    ///   - types: The allowed ``PasscodeType``s to setup.
     func changePasscode(
         isPresented: Binding<Bool>,
         types: [PasscodeType] = [.numeric(4)],

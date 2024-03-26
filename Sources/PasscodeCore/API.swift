@@ -35,6 +35,7 @@ public extension View {
     ///   - mode: The mode to present the passcode.
     ///   - input: The passcode input view. Call the given `dismiss` action when the passcode was validated.
     ///   - background: The background view of the passcode view.
+    /// 
     /// - Returns: A view with a passcode enabled.
     @MainActor func passcode<I, B>(
         mode: PasscodeMode = .default,
@@ -48,6 +49,12 @@ public extension View {
     
     // MARK: Privacy View
     
+    /// Automatially present a privacy view
+    ///
+    /// - Parameters:
+    ///   - material: The background material of the  privacy vew.
+    ///
+    /// - Returns: A view with a privacy view enabled.
     @MainActor func privacyView(
         background material: Material? = .regular
     ) -> some View {
@@ -56,6 +63,13 @@ public extension View {
         }
     }
     
+    /// Automatially present a privacy view
+    ///
+    /// - Parameters:
+    ///   - windowScene: The window scene to present the privacy vew on.
+    ///   - background: The background view of the privacy view.
+    ///
+    /// - Returns: A view with a privacy view enabled.
     @MainActor func privacyView<B>(
         @ViewBuilder background: @escaping () -> B
     ) -> some View where B: View {
@@ -70,6 +84,15 @@ public extension View {
 // MARK: - UIWindowScene
 
 public extension View {
+    /// Automatially present a passcode
+    ///
+    /// - Parameters:
+    ///   - windowScene: The window scene to present the passcode on.
+    ///   - mode: The mode to present the passcode.
+    ///   - material: The background material of the passcode view.
+    ///   - input: The passcode input view. Call the given `dismiss` action when the passcode was validated.
+    ///
+    /// - Returns: A view with a passcode enabled.
     @MainActor func passcode<I>(
         on windowScene: UIWindowScene,
         mode: PasscodeMode = .default,
@@ -84,6 +107,16 @@ public extension View {
         }
     }
     
+    /// Automatially present a passcode
+    ///
+    /// - Parameters:
+    ///   - windowScene: The window scene to present the passcode on.
+    ///   - mode: The mode to present the passcode.
+    ///   - material: The background material of the passcode view.
+    ///   - input: The passcode input view. Call the given `dismiss` action when the passcode was validated.
+    ///   - background: The background view of the passcode view.
+    ///
+    /// - Returns: A view with a passcode enabled.
     @MainActor func passcode<I, B>(
         on windowScene: UIWindowScene,
         mode: PasscodeMode = .default,
@@ -97,6 +130,13 @@ public extension View {
     
     // MARK: Privacy View
     
+    /// Automatially present a privacy view
+    ///
+    /// - Parameters:
+    ///   - windowScene: The window scene to present the  privacy vew on.
+    ///   - material: The background material of the  privacy vew.
+    ///
+    /// - Returns: A view with a privacy view enabled.
     @MainActor func privacyView(
         on windowScene: UIWindowScene,
         background material: Material? = .regular
@@ -106,6 +146,13 @@ public extension View {
         }
     }
     
+    /// Automatially present a privacy view
+    ///
+    /// - Parameters:
+    ///   - windowScene: The window scene to present the privacy vew on.
+    ///   - background: The background view of the privacy view.
+    ///
+    /// - Returns: A view with a privacy view enabled.
     @MainActor func privacyView<B>(
         on windowScene: UIWindowScene,
         @ViewBuilder background: @escaping () -> B
