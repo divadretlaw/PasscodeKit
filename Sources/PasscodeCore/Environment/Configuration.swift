@@ -10,6 +10,8 @@ import UIKit
 
 public extension PasscodeEnvironmentValues {
     /// The duration of the dismiss animation.
+    ///
+    /// > Info: Defaults to `0.3`
     var animatedDismissDuration: TimeInterval {
         get { self[AnimatedDismissDurationKey.self] }
         set { self[AnimatedDismissDurationKey.self] = newValue }

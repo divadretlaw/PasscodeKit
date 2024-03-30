@@ -30,16 +30,18 @@ public struct PasscodeEnvironmentValues: CustomStringConvertible {
     /// key with the subscript operator of the ``EnvironmentValues`` structure
     /// to get and set a value for that key:
     ///
-    ///     private struct MyEnvironmentKey: EnvironmentKey {
-    ///         static let defaultValue: String = "Default value"
-    ///     }
+    /// ```swift
+    /// private struct MyEnvironmentKey: EnvironmentKey {
+    ///     static let defaultValue: String = "Default value"
+    /// }
     ///
-    ///     extension PasscodeEnvironmentValues {
-    ///         var myCustomValue: String {
-    ///             get { self[MyEnvironmentKey.self] }
-    ///             set { self[MyEnvironmentKey.self] = newValue }
-    ///         }
+    /// extension PasscodeEnvironmentValues {
+    ///     var myCustomValue: String {
+    ///         get { self[MyEnvironmentKey.self] }
+    ///         set { self[MyEnvironmentKey.self] = newValue }
     ///     }
+    /// }
+    /// ```
     ///
     /// You use custom environment values the same way you use system-provided
     /// values, setting a value with the ``View/environment(_:_:)`` view
@@ -47,12 +49,13 @@ public struct PasscodeEnvironmentValues: CustomStringConvertible {
     /// You can also provide a dedicated view modifier as a convenience for
     /// setting the value:
     ///
-    ///     extension View {
-    ///         func myCustomValue(_ myCustomValue: String) -> some View {
-    ///             environment(\.passcode.myCustomValue, myCustomValue)
-    ///         }
+    /// ```swift
+    /// extension View {
+    ///     func myCustomValue(_ myCustomValue: String) -> some View {
+    ///         environment(\.passcode.myCustomValue, myCustomValue)
     ///     }
-    ///
+    /// }
+    /// ```
     public subscript<K>(key: K.Type) -> K.Value where K: EnvironmentKey {
         get { values[key] }
         set { values[key] = newValue }

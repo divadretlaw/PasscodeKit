@@ -23,15 +23,17 @@ public struct DismissPasscodeAction {
     /// call the ``DismissPasscodeAction`` structure that you get from the
     /// ``Environment``:
     ///
-    ///     private struct PasscodeView: View {
-    ///         @Environment(\.dismissPasscode) private var dismissPasscode
+    /// ```swift
+    /// private struct PasscodeView: View {
+    ///     @Environment(\.dismissPasscode) private var dismissPasscode
     ///
-    ///         var body: some View {
-    ///             Button("Dismiss Passcode") {
-    ///                 dismissPasscode(animated: true) // Implicitly calls dismissPasscode.callAsFunction(animated:)
-    ///             }
+    ///     var body: some View {
+    ///         Button("Dismiss Passcode") {
+    ///             dismissPasscode(animated: true) // Implicitly calls dismissPasscode.callAsFunction(animated:)
     ///         }
     ///     }
+    /// }
+    /// ```
     ///
     /// For information about how Swift uses the `callAsFunction()` method to
     /// simplify call site syntax, see
