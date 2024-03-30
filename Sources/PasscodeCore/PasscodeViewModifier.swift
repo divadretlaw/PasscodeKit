@@ -35,6 +35,7 @@ import WindowSceneReader
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.passcode.colorScheme) private var passcodeColorScheme
     @Environment(\.passcode.animatedDismissDuration) private var animatedDismissDuration
+    @Environment(\.passcode.windowLevel) private var windowLevel
     
     @State private var isShowingPasscode = false
     @State private var window: UIWindow?
@@ -103,6 +104,7 @@ import WindowSceneReader
         let window = UIWindow(windowScene: windowScene)
         window.overrideUserInterfaceStyle = userInterfaceStyle
         window.rootViewController = PasscodeBlurViewController(rootView: rootView)
+        window.windowLevel = windowLevel
         window.makeKeyAndVisible()
         
         self.window = window

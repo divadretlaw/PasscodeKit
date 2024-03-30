@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 public extension PasscodeEnvironmentValues {
     /// The duration of the dismiss animation.
@@ -19,6 +20,17 @@ public extension PasscodeEnvironmentValues {
         get { self[ColorSchemeKey.self] }
         set { self[ColorSchemeKey.self] = newValue }
     }
+    
+    /// The `UIWindow.Level` of the passcode overlay.
+    ///
+    /// > Info: Defaults to `UIWindow.Level.passcode`
+    ///
+    /// If you need the passcode window to be at a higher (or lower) level
+    /// simply set this to the desired `UIWindow.Level`
+    var windowLevel: UIWindow.Level {
+        get { self[UIWindowLevelKey.self] }
+        set { self[UIWindowLevelKey.self] = newValue }
+    }
 }
 
 private struct AnimatedDismissDurationKey: EnvironmentKey {
@@ -27,4 +39,8 @@ private struct AnimatedDismissDurationKey: EnvironmentKey {
 
 private struct ColorSchemeKey: EnvironmentKey {
     static var defaultValue: ColorScheme? { nil }
+}
+
+private struct UIWindowLevelKey: EnvironmentKey {
+    static var defaultValue: UIWindow.Level { .passcode }
 }
