@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-public struct TaskButton<Label>: View where Label: View {
+struct TaskButton<Label>: View where Label: View {
     var action: @Sendable () async -> Void
     var label: (Bool) -> Label
 
     @State private var isRunning = false
     @State private var task: Task<Void, Never>?
 
-    public init(
+    init(
         action: @MainActor @Sendable @escaping () async -> Void,
         @ViewBuilder label: @escaping (_ isRunning: Bool) -> Label
     ) {
@@ -22,7 +22,7 @@ public struct TaskButton<Label>: View where Label: View {
         self.label = label
     }
 
-    public var body: some View {
+    var body: some View {
         Button {
             self.isRunning = true
             self.task = Task {

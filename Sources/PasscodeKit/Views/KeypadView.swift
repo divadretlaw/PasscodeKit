@@ -14,6 +14,9 @@ struct KeypadView: View {
     @Binding var text: String
     var biometryAction: (() async -> Void)?
     
+    @ScaledMetric
+    private var buttonSize: CGFloat = 80
+    
     var body: some View {
         VStack(alignment: .center, spacing: configuration.vSpacing) {
             HStack(spacing: configuration.hSpacing) {
@@ -46,7 +49,7 @@ struct KeypadView: View {
                         .background(.ultraThinMaterial.blendMode(.multiply))
                     }
                     .buttonStyle(.plain)
-                    .frame(maxWidth: 100, maxHeight: 100)
+                    .frame(maxWidth: buttonSize, maxHeight: buttonSize)
                     .clipShape(Circle())
                 } else {
                     NumberButton(value: .blank, text: $text)
@@ -77,6 +80,9 @@ private struct NumberButton: View {
     let value: PasscodeInputValue
     @Binding var text: String
     
+    @ScaledMetric
+    private var buttonSize: CGFloat = 80
+    
     var body: some View {
         Button {
             switch value {
@@ -97,7 +103,7 @@ private struct NumberButton: View {
             .background(.ultraThinMaterial.blendMode(.multiply))
         }
         .buttonStyle(.plain)
-        .frame(maxWidth: 100, maxHeight: 100)
+        .frame(maxWidth: buttonSize, maxHeight: buttonSize)
         .clipShape(Circle())
     }
     

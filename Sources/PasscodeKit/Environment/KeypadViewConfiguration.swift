@@ -11,8 +11,8 @@ import PasscodeCore
 /// Customize the keypad view
 public struct KeypadViewConfiguration: Sendable {
     var foregroundColor: Color = .primary
-    var hSpacing: CGFloat = 40
-    var vSpacing: CGFloat = 20
+    var hSpacing: CGFloat = 25
+    var vSpacing: CGFloat = 15
     var deleteImage = Image(systemName: "delete.left")
     
     /// Configures the foreground color.
